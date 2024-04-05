@@ -7,37 +7,14 @@ const cover = ref(null);
 const coverPreivew = ref("");
 const onUpload = ref(false);
 const step = ref(0);
-const items = ref(
-  [
-    {
-      id: "1",
-      title: "🍎 Apple",
-      location: "Washington",
-      height: "0.1",
-      base: "0.07",
-      volume: "0.0001",
-    },
-    {
-      id: "2",
-      title: "🍌 Banana",
-      location: "Ecuador",
-      height: "0.2",
-      base: "0.05",
-      volume: "0.0002",
-    },
-    {
-      id: "3",
-      title: "🍇 Grapes",
-      location: "Italy",
-      height: "0.02",
-      base: "0.02",
-      volume: "<v-btn></v-btn>",
-    },
-  ].map((v) => {
+const items = ref([]);
+
+$fetch("/api/account").then((res) => {
+  items.value = res.body.map((v) => {
     v.action = v.id;
     return v;
-  })
-);
+  });
+});
 </script>
 <template>
   <div class="p-[2rem]">
@@ -65,11 +42,7 @@ const items = ref(
             color="primary"
           >
             <template v-slot:item.action="{ item }">
-              <v-btn
-                rounded="lg"
-                color="error"
-                flat
-                variant="tonal"
+              <v-btn rounded="lg" color="error" flat variant="tonal"
                 >Kick</v-btn
               >
             </template>
