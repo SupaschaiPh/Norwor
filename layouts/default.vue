@@ -4,6 +4,8 @@ import colors from "vuetify/util/colors";
 const railModeSidebar = useIsRail();
 const openSidebar = ref(true);
 const displayName = ref("Displayname");
+const userName = ref("aaaa@aaaaah");
+
 const isLogin = ref(false);
 const screenWidth = ref(0);
 
@@ -16,6 +18,17 @@ onMounted(() => {
 
   }
 });
+
+$fetch("/api/session").then(
+  (res)=>{
+    if(res && res?.acc?.id){
+      displayName.value = res.acc.displayName
+      userName.value = res.acc.username
+      isLogin.value = true
+
+    }
+  }
+)
 
 const openNavbarHandler = function () {
   if (window) screenWidth.value = window.innerWidth;
@@ -35,6 +48,11 @@ const openNavbarHandler = function () {
   }
   openSidebar.value = true;
 };
+const logoutHandler = function(){
+  $fetch("/api/logout")
+  isLogin.value = false
+
+}
 </script>
 <template>
   <v-layout>
@@ -76,7 +94,7 @@ const openNavbarHandler = function () {
           <v-list rounded="lg">
             <!-- title="Displayname" subtitle="Displayname@gmail.com" -->
             <v-list-item class="mb-2">
-              <div class="text-center rounded-lg bg-orange-50 p-4 pb-6">
+              <div class="text-center rounded-lg bg-orange-50 p-4 pb-6 min-w-[10rem]">
                 <div class="w-full flex justify-center">
                   <v-avatar
                     class="cursor-pointer"
@@ -89,7 +107,7 @@ const openNavbarHandler = function () {
                 </div>
                 <v-list-item-title>{{ displayName }}</v-list-item-title>
                 <v-list-item-subtitle class="pb-2"
-                  >Displayname@gmail.com</v-list-item-subtitle
+                  >{{ userName }}</v-list-item-subtitle
                 >
               </div>
               <!--
@@ -103,11 +121,13 @@ const openNavbarHandler = function () {
               density="compact"
               prepend-icon="mdi-cog"
               title="Setting"
+              @click=""
             ></v-list-item>
             <v-list-item
               density="compact"
               prepend-icon="mdi-logout"
               title="Logout"
+              @click="logoutHandler"
             ></v-list-item>
           </v-list>
         </v-menu>
@@ -117,8 +137,7 @@ const openNavbarHandler = function () {
           density="comfortable"
           @click="
             () => {
-              router.push('/login');
-              isLogin = true;
+              router.push('/singin');
             }
           "
           icon="mdi-login"

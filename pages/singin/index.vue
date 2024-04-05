@@ -3,45 +3,70 @@ definePageMeta({
   middleware: "custom-layout",
 });
 
+const router = useRouter()
+
 const step = ref(0);
 const username = ref("");
-const usernameError = ref(false);
-
+const usernameError = ref(null);
 const password = ref("");
-const loading = ref(false)
-const gotoPasswordStep = function() {
-  step.value = 1
+const passwordError = ref(null);
+const loading = ref(false);
+
+const gotoPasswordStep = function () {
+  step.value = 1;
 };
 
-const checkUsernameHandler = function(){
-  loading.value = true
+const checkUsernameHandler = function () {
+  loading.value = true;
 
-  $fetch("/api/signin",{
-    method:"POST",
-    body:{
-      username:username.value
-    }
-  }).then(
-    (res)=>{
-      loading.value = false
-      if(res.status == 200){
-        gotoPasswordStep()
-      }else{
-        usernameError.value = "incorrect username"
+  $fetch("/api/signin", {
+    method: "POST",
+    body: {
+      username: username.value,
+    },
+  })
+    .then((res) => {
+      loading.value = false;
+      if (res.status == 200) {
+        gotoPasswordStep();
+      } else {
+        usernameError.value = "incorrect username";
       }
-    }
-  ).catch(
-    (err)=>{
-      loading.value = false
-      console.log(err)
-    }
-  )
-}
+    })
+    .catch((err) => {
+      loading.value = false;
+      console.log(err);
+    });
+};
 
+const onSinginHandler = function () {
+  if (password.value != "") {
+    loading.value = true;
+    $fetch("/api/signin", {
+      method: "POST",
+      body: {
+        username: username.value,
+        password: password.value,
+      },
+    })
+      .then((res) => {
+        loading.value = false;
+        if (res.status == 200) {
+          router.push("/")
+        } else {
+          passwordError.value = res.mss.replace("fail", "password should be");
+        }
+      })
+      .catch((err) => {
+        loading.value = false;
+        console.log(err);
+      });
+  }
+};
 </script>
 <template>
   <section class="w-full h-full flex justify-center items-center bg-orange-50">
-    <div class=" w-10/12 md:w-6/12 lg:w-4/12">
+    <div class="w-10/12 md:w-6/12 lg:w-4/12">
       <v-card elevation="1" rounded="xl">
         <div class="p-4" v-if="step == 0">
           <v-card-title><p class="font-bold">Sign in</p></v-card-title>
@@ -68,7 +93,11 @@ const checkUsernameHandler = function(){
                 variant="flat"
                 color="primary"
                 :loading="loading"
-                @click="()=>{checkUsernameHandler()}"
+                @click="
+                  () => {
+                    checkUsernameHandler();
+                  }
+                "
                 >Next</v-btn
               >
             </div>
@@ -89,6 +118,7 @@ const checkUsernameHandler = function(){
                 color="primary"
                 rounded="lg"
                 v-model="password"
+                :error-messages="passwordError"
               ></v-text-field>
             </div>
           </v-card-item>
@@ -104,7 +134,14 @@ const checkUsernameHandler = function(){
                 "
                 >Prev</v-btn
               >
-              <v-btn rounded="lg" variant="flat" color="primary" :loading="loading">Sign in</v-btn>
+              <v-btn
+                rounded="lg"
+                variant="flat"
+                color="primary"
+                :loading="loading"
+                @click="onSinginHandler"
+                >Sign in</v-btn
+              >
             </div>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -112,9 +149,15 @@ const checkUsernameHandler = function(){
       </v-card>
       <div class="flex mt-2 justify-end">
         <div class="flex">
-          <v-btn href="/docs/help" size="x-small" variant="text">ความช่วยเหลือ</v-btn>
-          <v-btn href="/docs/private" size="x-small" variant="text">ความเป็นส่วนตัว</v-btn>
-          <v-btn href="/docs/policy" size="x-small" variant="text">ข้อกำหนด</v-btn>
+          <v-btn href="/docs/help" size="x-small" variant="text"
+            >ความช่วยเหลือ</v-btn
+          >
+          <v-btn href="/docs/private" size="x-small" variant="text"
+            >ความเป็นส่วนตัว</v-btn
+          >
+          <v-btn href="/docs/policy" size="x-small" variant="text"
+            >ข้อกำหนด</v-btn
+          >
         </div>
       </div>
     </div>

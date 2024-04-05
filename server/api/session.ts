@@ -4,7 +4,7 @@ export default defineEventHandler(async(event)=>{
         password:config.SECRETKEY
       })
     return {
-
+      acc:session.data.acc
     }
 }
 )
