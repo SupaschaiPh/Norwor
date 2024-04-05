@@ -1,6 +1,10 @@
 <script setup>
-  const channelName = ref("Maroon 5")
+  const channelName = ref("Admin")
+  const channelSubtitle = ref("Admin@admin.com")
+
   const videoTitle = ref("Maroon 5 - This Love (Official Music Video)")
+
+  const videoDesc = ref("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras fermentum odio eu feugiat pretium. Quis blandit turpis cursus in hac habitasse platea dictumst. Id consectetur purus ut faucibus pulvinar elementum integer. Suspendisse in est ante in nibh mauris cursus mattis molestie. Enim nunc faucibus a pellentesque sit amet porttitor. Ipsum dolor sit amet consectetur adipiscing. Aliquet nibh praesent tristique magna sit amet. Lacus sed turpis tincidunt id. Nunc scelerisque viverra mauris in. Adipiscing vitae proin sagittis nisl rhoncus.")
 </script>
 <template>
   <div class="p-[2rem]">
@@ -15,7 +19,7 @@
           <v-list-item
             style="padding: 0px"
             :title="channelName"
-            subtitle="ผู้ติดตาม 36.9 ล้าน คน"
+            :subtitle="channelSubtitle"
             class="mt-2 px-2"
           >
             <template v-slot:prepend>
@@ -29,7 +33,7 @@
             </template>
           </v-list-item>
           <div class="mt-5 p-3 bg-orange-50 rounded-lg">
-              demo
+              <v-card-text>{{ videoDesc }}</v-card-text>
           </div>
         </section>
       </div>

@@ -43,6 +43,27 @@
       "when": 1711863687126,
       "tag": "0005_loose_hammerhead",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1712328795071,
+      "tag": "0006_freezing_russian",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1712328905890,
+      "tag": "0007_gorgeous_toro",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1712329539253,
+      "tag": "0008_outstanding_shadowcat",
+      "breakpoints": true
     }
   ]
 }

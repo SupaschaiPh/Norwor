@@ -11,6 +11,10 @@ const status = ref([
     title: "HLS Server",
     status_code: 200,
     status: "ok",
+  },{
+    title: "HLS SServer",
+    status_code: 400,
+    status: "ok",
   },
 ]);
 </script>

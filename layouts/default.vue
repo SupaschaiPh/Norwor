@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import colors from "vuetify/util/colors";
 
-const searchKeyword = ref("");
 const railModeSidebar = useIsRail();
 const openSidebar = ref(true);
 const displayName = ref("Displayname");
@@ -9,8 +8,13 @@ const isLogin = ref(false);
 const screenWidth = ref(0);
 
 const router = useRouter();
+
 onMounted(() => {
   screenWidth.value = window.innerWidth;
+  if(screenWidth.value<1300){
+    openSidebar.value = false;
+
+  }
 });
 
 const openNavbarHandler = function () {
@@ -53,6 +57,10 @@ const openNavbarHandler = function () {
         flat
         variant="solo-filled"
       ></v-text-field>-->
+      <div
+        class="text-center bg-gray-100 p-2 rounded-full w-[25rem] hidden sm:block"
+        variant="solo-filled"
+      >{{ router.currentRoute.value.fullPath }}</div>
       <v-spacer> </v-spacer>
       <div v-if="isLogin" class="mx-5 cursor-pointer">
         <v-avatar
@@ -166,11 +174,23 @@ const openNavbarHandler = function () {
           }
         "
       ></v-list-item>
+
+      <v-list-item
+        prepend-icon="mdi-account-group"
+        rounded="lg"
+        link
+        title="Mange Account"
+        @click="
+          () => {
+            router.push('/admin/account');
+          }
+        "
+      ></v-list-item>
       <div v-if="railModeSidebar" class="mt-2"></div>
     </v-navigation-drawer>
 
     <v-main>
-      <v-card rounded="xl" class="m-2" :loading="true">
+      <v-card rounded="xl" :elevation="2" class="m-2">
         <slot />
       </v-card>
     </v-main>

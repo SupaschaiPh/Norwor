@@ -4,11 +4,16 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   displayName: text('displayName').notNull(),
-  email: text('email').notNull().unique(),
+  username: text('username').notNull().unique(),
   password: text('password').notNull(),
 }) 
 
+export const comments = sqliteTable("comments",{
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  comments:text("comments").notNull().default("")
+})
 
+/*
 export const videos = sqliteTable("video",{
   id: integer('id').primaryKey({ autoIncrement: true }),
   source:text('source').notNull(),
