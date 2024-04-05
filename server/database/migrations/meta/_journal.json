@@ -1,0 +1,48 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1711782431204,
+      "tag": "0000_silky_madrox",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1711863060542,
+      "tag": "0001_easy_masque",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1711863169755,
+      "tag": "0002_handy_alice",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1711863520222,
+      "tag": "0003_icy_hairball",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1711863556925,
+      "tag": "0004_brown_mandrill",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1711863687126,
+      "tag": "0005_loose_hammerhead",
+      "breakpoints": true
+    }
+  ]
+}

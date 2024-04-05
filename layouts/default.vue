@@ -109,6 +109,7 @@ const openNavbarHandler = function () {
           density="comfortable"
           @click="
             () => {
+              router.push('/login');
               isLogin = true;
             }
           "

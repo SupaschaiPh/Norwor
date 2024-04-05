@@ -1,0 +1,1 @@
+ALTER TABLE video ADD `title` text DEFAULT '';
