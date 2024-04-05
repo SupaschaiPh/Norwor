@@ -11,7 +11,8 @@ const status = ref([
     title: "HLS Server",
     status_code: 200,
     status: "ok",
-  },{
+  },
+  {
     title: "HLS SServer",
     status_code: 400,
     status: "ok",
@@ -21,17 +22,21 @@ const status = ref([
 
 <template>
   <div class="p-[2rem] flex flex-col gap-6">
-    <v-card rounded="lg" variant="tonal" color="primary">
-      <v-card-item>
-        <v-card-title
-          ><p class="font-bold text-center">Server Status</p></v-card-title
-        >
-      </v-card-item>
-    </v-card>
+    <v-card flat title="Server Status"> </v-card>
 
     <v-card flat variant="outlined" :color="colors.grey.lighten4" rounded="lg">
       <v-card-text class="flex flex-col gap-4">
-        <v-card rounded="lg" :color="status.every((v)=>Math.floor(v.status_code/100)==2) ? 'success' : 'warning'">
+        <v-card
+          variant="tonal"
+          rounded="lg"
+          :color="
+            status.every((v) => Math.floor(v.status_code / 100) == 2)
+              ? 'success'
+              : status.some((v) => Math.floor(v.status_code / 100) == 2)
+              ? 'warning'
+              : 'error'
+          "
+        >
           <v-card-item>
             <v-card-title
               ><p class="font-bold text-center">All Server</p></v-card-title
