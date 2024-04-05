@@ -21,9 +21,9 @@ const onSendmessageHandler = function () {
   message.value = "";
 };
 onMounted(() => {
-  const client = mqtt.connect("mqtt://broker.hivemq.com:8000", {
+  const client = mqtt.connect("mqtt://localhost", {
     clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
-    port: 8000,
+    port: 8083,
     path: "/mqtt",
   });
   client.on("connect", () => {
@@ -33,6 +33,7 @@ onMounted(() => {
     client.subscribe("0t]F9Z`2tiW0", (err) => {
       if (!err) {
         //client.publish("0t]F9Z`2tiW0", "Hello mqtt");
+        console.log("subscribed")
       }
     });
   });

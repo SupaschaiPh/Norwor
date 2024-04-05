@@ -1,29 +1,47 @@
-import { relations } from 'drizzle-orm';
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
+import { relations } from "drizzle-orm";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 //https://hub.nuxt.com/docs/recipes/drizzle
-export const users = sqliteTable('users', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  displayName: text('displayName').notNull(),
-  username: text('username').notNull().unique(),
-  password: text('password').notNull(),
-}) 
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  displayName: text("displayName").notNull(),
+  username: text("username").notNull().unique(),
+  password: text("password").notNull(),
+});
 
-export const comments = sqliteTable("comments",{
+/*export const comments = sqliteTable("comments",{
   id: integer('id').primaryKey({ autoIncrement: true }),
   comments:text("comments").notNull().default("")
-})
+})*/
+
+export const videos = sqliteTable("video", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  source: text("source").notNull(),
+  title: text("title")
+    .notNull()
+    .default(
+      "Video" + new Date().toISOString() + Math.floor(Math.random() * 10000000)
+    ),
+  descption: text("descption").default(""),
+  cover: text("cover").notNull(),
+});
+
+export const mqtt = sqliteTable("mqtt", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  host: text("host").notNull(),
+  port: integer("port").notNull(),
+  topic: text("topic").notNull(),
+  qos: integer("qos").notNull().default(0),
+});
+
+export const servers = sqliteTable("servers", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  title: text("title").notNull(),
+  host:text("host").notNull(),
+  port: integer("port").notNull(),
+
+});
 
 /*
-export const videos = sqliteTable("video",{
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  source:text('source').notNull(),
-  title:text('title').notNull().default("Video"+(new Date()).toISOString()
-  +Math.floor(Math.random()*10000000)),
-  descption:text('descption').default(""),
-  author_id:integer("author_id").references(()=>users.id),
-  visibility:text("visibility").default("private").notNull()
-})
-
 export const subscription = sqliteTable("subscription",{
   follower_id:integer("follower_id").references(()=>users.id),
   channel_id:integer("channel_id").references(()=>users.id),
