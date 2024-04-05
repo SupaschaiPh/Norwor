@@ -44,7 +44,7 @@ const openNavbarHandler = function () {
       >
       </v-app-bar-nav-icon>
       <v-toolbar-title class="font-bold">X Tube</v-toolbar-title>
-      <v-text-field
+      <!--<v-text-field
         v-model="searchKeyword"
         append-inner-icon="mdi-magnify"
         class="mt-5"
@@ -52,7 +52,7 @@ const openNavbarHandler = function () {
         rounded="pill"
         flat
         variant="solo-filled"
-      ></v-text-field>
+      ></v-text-field>-->
       <v-spacer> </v-spacer>
       <div v-if="isLogin" class="mx-5 cursor-pointer">
         <v-avatar
@@ -142,39 +142,27 @@ const openNavbarHandler = function () {
       <v-list-item
         @click="
           () => {
-            router.push('/subscriptions');
+            router.push('/status');
           }
         "
-        prepend-icon="mdi-youtube-subscription"
+        prepend-icon="mdi-server-network"
         rounded="lg"
         link
-        title="Subscripte"
+        title="Server Status"
       ></v-list-item>
       <div v-if="railModeSidebar" class="mt-2"></div>
 
-      <v-list-item v-if="!railModeSidebar" title="Me"></v-list-item>
+      <v-list-item v-if="!railModeSidebar" title="Admin"></v-list-item>
       <v-divider v-if="!railModeSidebar"></v-divider>
 
       <v-list-item
-        prepend-icon="mdi-thumb-up"
+        prepend-icon="mdi-access-point"
         rounded="lg"
         link
-        title="Like"
+        title="Steam Setting"
         @click="
           () => {
-            router.push('/me/likes');
-          }
-        "
-      ></v-list-item>
-      <div v-if="railModeSidebar" class="mt-2"></div>
-      <v-list-item
-        prepend-icon="mdi-archive"
-        rounded="lg"
-        link
-        title="My Video"
-        @click="
-          () => {
-            router.push('/me/videos');
+            router.push('/admin/setting');
           }
         "
       ></v-list-item>
@@ -182,7 +170,7 @@ const openNavbarHandler = function () {
     </v-navigation-drawer>
 
     <v-main>
-      <v-card rounded="lg" class="m-2" :loading="true">
+      <v-card rounded="xl" class="m-2" :loading="true">
         <slot />
       </v-card>
     </v-main>
