@@ -1,9 +1,9 @@
 <script setup>
 import colors from "vuetify/util/colors";
+import mqtt from "mqtt";
 
 const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
-
 const videoTitle = ref(
   'Sunday Morning - Vintage "La La Land" Style Maroon 5 Cover ft. Addie Hamilton'
 );
@@ -11,13 +11,37 @@ const videoTitle = ref(
 const videoDesc = ref(
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras fermentum odio eu feugiat pretium. Quis blandit turpis cursus in hac habitasse platea dictumst. Id consectetur purus ut faucibus pulvinar elementum integer. Suspendisse in est ante in nibh mauris cursus mattis molestie. Enim nunc faucibus a pellentesque sit amet porttitor. Ipsum dolor sit amet consectetur adipiscing. Aliquet nibh praesent tristique magna sit amet. Lacus sed turpis tincidunt id. Nunc scelerisque viverra mauris in. Adipiscing vitae proin sagittis nisl rhoncus."
 );
-const message = ref("")
-const chats = ref(["Hello World"]);
+const message = ref("");
+const chats = ref([]);
+let publisMqtt = (mss)=>{}
 
-const onSendmessageHandler = function(){
-  chats.value.push(message.value)
-  message.value = ""
-}
+const onSendmessageHandler = function () {
+  //chats.value.push(message.value);
+  publisMqtt(message.value);
+  message.value = "";
+};
+onMounted(() => {
+  const client = mqtt.connect("mqtt://broker.hivemq.com:8000", {
+    clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
+    port: 8000,
+    path: "/mqtt",
+  });
+  client.on("connect", () => {
+    publisMqtt = (mss)=>{
+      client.publish("0t]F9Z`2tiW0",mss)
+    }
+    client.subscribe("0t]F9Z`2tiW0", (err) => {
+      if (!err) {
+        //client.publish("0t]F9Z`2tiW0", "Hello mqtt");
+      }
+    });
+  });
+  client.on("message", (topic, message) => {
+    // message is Buffer
+    //console.log(message.toString());
+    chats.value.push(message.toString())
+  });
+});
 </script>
 <template>
   <div class="p-[2rem]">

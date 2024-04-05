@@ -1,0 +1,9 @@
+version: '0.0.0'
+services:
+  MQTT_broker:
+    image: imageName:emqx/nanomq:0.21
+    container_name: MQTT_broker
+    ports:
+      -1883:1883 
+      -8083:8083 
+      -8883:8883

@@ -22,6 +22,7 @@
     "better-sqlite3": "^9.4.3",
     "colorthief": "^2.4.0",
     "drizzle-orm": "^0.29.5",
+    "mqtt": "^5.5.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^3.11.1",
     "vue": "^3.4.21",
