@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import colors from "vuetify/util/colors";
+const router = useRouter();
 
 const railModeSidebar = useIsRail();
 const openSidebar = ref(true);
@@ -9,7 +10,7 @@ const userName = ref("aaaa@aaaaah");
 const isLogin = ref(false);
 const screenWidth = ref(0);
 
-const router = useRouter();
+const acc = useAcc()
 
 onMounted(() => {
   screenWidth.value = window.innerWidth;
@@ -25,7 +26,7 @@ $fetch("/api/session").then(
       displayName.value = res.acc.displayName
       userName.value = res.acc.username
       isLogin.value = true
-
+      acc.value = res.acc
     }
   }
 )
@@ -51,7 +52,6 @@ const openNavbarHandler = function () {
 const logoutHandler = function(){
   $fetch("/api/logout")
   isLogin.value = false
-
 }
 </script>
 <template>

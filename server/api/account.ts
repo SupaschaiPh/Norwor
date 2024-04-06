@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const session = await useSession(event,{
     password:config.SECRETKEY
   })
-  let users = (await useDrizzle().select().from(tables.users).all()).map((v)=>{delete v.password;return v})
+  let users = (await useDrizzle().select().from(tables.users).all()).map((v)=>{ v.password = "" ;return v})
      
     return {
       status:statusCode,

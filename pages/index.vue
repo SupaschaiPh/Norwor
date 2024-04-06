@@ -4,44 +4,60 @@ import mqtt from "mqtt";
 
 const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
-const videoTitle = ref(
-  'Sunday Morning - Vintage "La La Land" Style Maroon 5 Cover ft. Addie Hamilton'
-);
+const videoTitle = ref("LA LA LA Live LA Like");
 
 const videoDesc = ref(
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras fermentum odio eu feugiat pretium. Quis blandit turpis cursus in hac habitasse platea dictumst. Id consectetur purus ut faucibus pulvinar elementum integer. Suspendisse in est ante in nibh mauris cursus mattis molestie. Enim nunc faucibus a pellentesque sit amet porttitor. Ipsum dolor sit amet consectetur adipiscing. Aliquet nibh praesent tristique magna sit amet. Lacus sed turpis tincidunt id. Nunc scelerisque viverra mauris in. Adipiscing vitae proin sagittis nisl rhoncus."
 );
 const message = ref("");
 const chats = ref([]);
-let publisMqtt = (mss)=>{}
+let publisMqtt = (mss) => {};
 
 const onSendmessageHandler = function () {
   //chats.value.push(message.value);
   publisMqtt(message.value);
   message.value = "";
 };
+
+const { data } = useFetch("/api/steamimg");
+
 onMounted(() => {
   const client = mqtt.connect("mqtt://localhost", {
     clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
     port: 8083,
     path: "/mqtt",
+    reconnectPeriod: 0, //disabled auto reconnect
   });
   client.on("connect", () => {
-    publisMqtt = (mss)=>{
-      client.publish("0t]F9Z`2tiW0",mss)
-    }
+    publisMqtt = (mss) => {
+      client.publish("0t]F9Z`2tiW0", mss);
+    };
     client.subscribe("0t]F9Z`2tiW0", (err) => {
       if (!err) {
         //client.publish("0t]F9Z`2tiW0", "Hello mqtt");
-        console.log("subscribed")
+        console.log("subscribed");
       }
     });
   });
   client.on("message", (topic, message) => {
     // message is Buffer
     //console.log(message.toString());
-    chats.value.push(message.toString())
+    chats.value.push(message.toString());
+    setTimeout(() => {
+      document
+      .getElementById("chit-chat-messages")
+      .scroll({
+        top: document.getElementById("chit-chat-messages").scrollHeight * 2,
+        behavior: "smooth",
+      });
+    }, 100);
+    
   });
+
+  if (data.value.body.video.title)
+    videoTitle.value = data.value.body.video.title;
+  if (data.value.body.video.descption)
+    videoDesc.value = data.value.body.video.descption;
 });
 </script>
 <template>
@@ -79,7 +95,11 @@ onMounted(() => {
       </div>
       <div class="lg:w-4/12 lg:px-3">
         <v-card class="h-full relative" title="ChitChat" rounded="xl">
-          <v-card-text class="flex flex-col gap-2">
+          <hr />
+          <v-card-text
+            class="flex flex-col gap-2 h-[72vh] overflow-y-scroll"
+            id="chit-chat-messages"
+          >
             <div v-for="message in chats">
               <v-card
                 flat
@@ -89,7 +109,7 @@ onMounted(() => {
               ></v-card>
             </div>
           </v-card-text>
-          <div class="lg:absolute bottom-0 w-full">
+          <div class="bottom-0 w-full">
             <v-card-text>
               <div class="w-full flex gap-2">
                 <span class="w-full">

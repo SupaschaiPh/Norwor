@@ -1,0 +1,22 @@
+meta {
+  name: steamimg
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:3000/api/steamimg
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "video":{
+      "title":"video1"
+    },
+    "mqtt":{
+      "host":"mqtt://localhost"
+    }
+  }
+}

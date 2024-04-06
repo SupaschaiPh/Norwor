@@ -28,14 +28,15 @@ $fetch("/api/account").then((res) => {
         single-line
         density="compact"
         rounded="lg"
-        class="mt-3 mb-0"
+        class="mb-0"
         color="primary"
       ></v-text-field>
       <v-window v-model="tab">
         <v-window-item value="all">
+          
           <v-data-table
             v-model="selected"
-            show-select
+           
             :items="items"
             item-value="title"
             :search="search"

@@ -15,29 +15,32 @@ export const users = sqliteTable("users", {
 
 export const videos = sqliteTable("video", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  source: text("source").notNull(),
+  source: text("source").notNull().default(""),
   title: text("title")
     .notNull()
     .default(
       "Video" + new Date().toISOString() + Math.floor(Math.random() * 10000000)
     ),
   descption: text("descption").default(""),
-  cover: text("cover").notNull(),
+  cover: text("cover").notNull().default(""),
 });
 
 export const mqtt = sqliteTable("mqtt", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  host: text("host").notNull(),
-  port: integer("port").notNull(),
-  topic: text("topic").notNull(),
+  host: text("host").notNull().default(""),
+  port: integer("port").notNull().default(8003),
+  topic: text("topic").notNull().default("DUCKBEECAUSE-XYZ$ALWAYSMISSU"),
   qos: integer("qos").notNull().default(0),
+  connect_timeout: integer("connect_timeout").notNull().default(4000),
+
 });
 
 export const servers = sqliteTable("servers", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
-  host:text("host").notNull(),
-  port: integer("port").notNull(),
+  host:text("host").notNull().default(""),
+  port: integer("port").notNull().default(80),
+  path:text("path").default("")
 
 });
 
