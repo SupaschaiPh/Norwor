@@ -5,10 +5,11 @@ import mqtt from "mqtt";
 const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
 const videoTitle = ref("LA LA LA Live LA Like");
-
 const videoDesc = ref(
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras fermentum odio eu feugiat pretium. Quis blandit turpis cursus in hac habitasse platea dictumst. Id consectetur purus ut faucibus pulvinar elementum integer. Suspendisse in est ante in nibh mauris cursus mattis molestie. Enim nunc faucibus a pellentesque sit amet porttitor. Ipsum dolor sit amet consectetur adipiscing. Aliquet nibh praesent tristique magna sit amet. Lacus sed turpis tincidunt id. Nunc scelerisque viverra mauris in. Adipiscing vitae proin sagittis nisl rhoncus."
 );
+const videoCoverURL = ref("");
+
 const message = ref("");
 const chats = ref([]);
 let publisMqtt = (mss) => {};
@@ -19,45 +20,44 @@ const onSendmessageHandler = function () {
   message.value = "";
 };
 
-const { data } = useFetch("/api/steamimg");
-
 onMounted(() => {
-  const client = mqtt.connect("mqtt://localhost", {
-    clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
-    port: 8083,
-    path: "/mqtt",
-    reconnectPeriod: 0, //disabled auto reconnect
-  });
-  client.on("connect", () => {
-    publisMqtt = (mss) => {
-      client.publish("0t]F9Z`2tiW0", mss);
-    };
-    client.subscribe("0t]F9Z`2tiW0", (err) => {
-      if (!err) {
-        //client.publish("0t]F9Z`2tiW0", "Hello mqtt");
-        console.log("subscribed");
-      }
+  function setupMQTT(host="mqtt://localhost",port=8083,path="/mqtt",topic="DUCKBEECAUSE-XYZ$ALWAYSMISSU") {
+    const client = mqtt.connect(host, {
+      clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
+      port,
+      path ,
+      reconnectPeriod: 0
     });
-  });
-  client.on("message", (topic, message) => {
-    // message is Buffer
-    //console.log(message.toString());
-    chats.value.push(message.toString());
-    setTimeout(() => {
-      document
-      .getElementById("chit-chat-messages")
-      .scroll({
-        top: document.getElementById("chit-chat-messages").scrollHeight * 2,
-        behavior: "smooth",
+    client.on("connect", () => {
+      publisMqtt = (mss) => {
+        client.publish(topic, mss);
+      };
+      client.subscribe(topic, (err) => {
+        if (!err) {
+          //client.publish("0t]F9Z`2tiW0", "Hello mqtt");
+          console.log("subscribed");
+        }
       });
-    }, 100);
-    
-  });
+    });
+    client.on("message", (topic, message) => {
+      // message is Buffer
+      //console.log(message.toString());
+      chats.value.push(message.toString());
+      setTimeout(() => {
+        document.getElementById("chit-chat-messages").scroll({
+          top: document.getElementById("chit-chat-messages").scrollHeight * 2,
+          behavior: "smooth",
+        });
+      }, 100);
+    });
+  }
 
-  if (data.value.body.video.title)
-    videoTitle.value = data.value.body.video.title;
-  if (data.value.body.video.descption)
-    videoDesc.value = data.value.body.video.descption;
+  $fetch("/api/steamimg").then((data) => {
+    if (data.body.video.title) videoTitle.value = data?.body.video.title;
+    if (data.body.video.descption) videoDesc.value = data?.body.video.descption;
+    if (data.body.video.cover) videoCoverURL.value = data.body.video.cover;
+    setupMQTT(data.body.mqtt.host,data.body.mqtt.port,data.body.mqtt.path,data.body.mqtt.topic)
+  });
 });
 </script>
 <template>
@@ -65,7 +65,7 @@ onMounted(() => {
     <div class="flex flex-col lg:flex-row w-full gap-2">
       <div class="w-full lg:w-8/12">
         <v-card class="aspect-video max-h-fit" rounded="xl">
-          <Player></Player>
+          <Player :cover="videoCoverURL"></Player>
         </v-card>
         <section class="mt-2">
           <p class="text-xl font-bold px-2">

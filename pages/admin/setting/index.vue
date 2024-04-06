@@ -1,10 +1,19 @@
 <script setup>
 import colors from "vuetify/util/colors";
-const title = ref("Go Live 1");
-const desc = ref("Go Live 1 desu");
+
+const title = ref("");
+const desc = ref("");
+const source = ref("https://");
 const coverFile = ref(null);
-const fixedCoverURL = ref("https://cdn.vuetifyjs.com/images/cards/docks.jpg");
+const fixedCoverURL = ref("/docks.jpg");
 const coverURL = ref(fixedCoverURL.value);
+
+const chatHost = ref("");
+const chatPort = ref("");
+const chatTopic = ref("");
+const chatQos = ref("");
+const chatPath = ref("");
+
 const onChangeCoverFile = function (e) {
   if (coverFile.value[0]) {
     const reader = new FileReader();
@@ -16,6 +25,19 @@ const onChangeCoverFile = function (e) {
     coverURL.value = fixedCoverURL.value;
   }
 };
+
+onMounted(() => {
+  $fetch("/api/steamimg").then((data) => {
+    title.value = data.body.video.title;
+    desc.value = data.body.video.description;
+    coverURL.value = data.body.video.cover;
+
+    chatHost.value = data.body.mqtt.host;
+    chatPort.value = data.body.mqtt.port;
+    chatTopic.value = data.body.mqtt.topic;
+    chatQos.value = data.body.mqtt.qos;
+  });
+});
 </script>
 <template>
   <section class="p-[2rem]">
@@ -26,9 +48,17 @@ const onChangeCoverFile = function (e) {
             <v-card rounded="xl" class="aspect-video" :image="coverURL">
             </v-card>
             <v-card-title>
+              <v-text-field
+                color="primary"
+                rounded="lg"
+                label="Source"
+                variant="outlined"
+                density="compact"
+                v-model="source"
+                class="mt-4"
+              ></v-text-field>
               <v-file-input
                 v-model="coverFile"
-                class="mt-4"
                 color="primary"
                 show-size
                 chips
@@ -84,6 +114,8 @@ const onChangeCoverFile = function (e) {
             density="compact"
             label="Host"
             variant="outlined"
+            v-model="chatHost"
+            rounded="lg"
           ></v-text-field>
           <v-text-field
             color="primary"
@@ -91,23 +123,38 @@ const onChangeCoverFile = function (e) {
             label="Port"
             type="number"
             variant="outlined"
+            v-model="chatPort"
+            rounded="lg"
           ></v-text-field>
         </div>
         <div class="flex gap-6">
           <v-text-field
-            class="w-10/12"
+            class="w-8/12"
             color="primary"
             density="compact"
             label="Topic"
             variant="outlined"
+            v-model="chatTopic"
+            rounded="lg"
           ></v-text-field>
           <v-select
-            label="Select"
+            label="Qos"
             color="primary"
             density="compact"
             :items="[0, 1, 2]"
             variant="outlined"
+            v-model="chatQos"
+            rounded="lg"
           ></v-select>
+          <v-text-field
+            class="w-2/12"
+            color="primary"
+            density="compact"
+            label="Path"
+            variant="outlined"
+            rounded="lg"
+            v-model="chatPath"
+          ></v-text-field>
         </div>
       </v-card-text>
     </div>

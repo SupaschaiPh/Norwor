@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
             await useDrizzle().insert(tables.mqtt).values(sqlVal)
           }
         }
-      return { body };
+      return { status:200,mss:"success" };
     }
   }
 });

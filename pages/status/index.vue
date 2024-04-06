@@ -13,7 +13,7 @@ const status = ref([
     status: "ok",
   },
   {
-    title: "HLS SServer",
+    title: "MQTT Server",
     status_code: 400,
     status: "ok",
   },

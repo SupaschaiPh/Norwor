@@ -30,6 +30,7 @@ export default defineNuxtConfig({
   runtimeConfig:{
     ADMIN_USERNAME:process.env?.ADMIN_USERNAME || "admin",
     ADMIN_PASSWORD:process.env?.ADMIN_PASSWORD || "admin@admin",
-    SECRETKEY : process.env?.SECRETKEY || "kakakaku".padStart(32,"ka")
+    SECRETKEY : process.env?.SECRETKEY || "kakakaku".padStart(32,"ka"),
+    DB_PATH : process.env?.DB_PATH
   }
 });
