@@ -26,6 +26,9 @@
     "mqtt": "^5.5.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^3.11.1",
+    "videojs-contrib-quality-levels": "^4.1.0",
+    "videojs-hls-quality-selector": "^2.0.0",
+    "videojs-quality-selector-hls": "^1.1.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
@@ -33,6 +36,7 @@
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@types/better-sqlite3": "^7.6.9",
     "drizzle-kit": "^0.20.14",
+    "video.js": "^8.10.0",
     "vite-plugin-vuetify": "^2.0.3",
     "vuetify": "^3.5.13"
   }

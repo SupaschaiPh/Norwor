@@ -9,9 +9,10 @@ const videoDesc = ref(
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras fermentum odio eu feugiat pretium. Quis blandit turpis cursus in hac habitasse platea dictumst. Id consectetur purus ut faucibus pulvinar elementum integer. Suspendisse in est ante in nibh mauris cursus mattis molestie. Enim nunc faucibus a pellentesque sit amet porttitor. Ipsum dolor sit amet consectetur adipiscing. Aliquet nibh praesent tristique magna sit amet. Lacus sed turpis tincidunt id. Nunc scelerisque viverra mauris in. Adipiscing vitae proin sagittis nisl rhoncus."
 );
 const videoCoverURL = ref("");
-
 const message = ref("");
 const chats = ref([]);
+const isLoading = ref(true);
+
 let publisMqtt = (mss) => {};
 
 const onSendmessageHandler = function () {
@@ -21,12 +22,17 @@ const onSendmessageHandler = function () {
 };
 
 onMounted(() => {
-  function setupMQTT(host="mqtt://localhost",port=8083,path="/mqtt",topic="DUCKBEECAUSE-XYZ$ALWAYSMISSU") {
+  function setupMQTT(
+    host = "mqtt://localhost",
+    port = 8083,
+    path = "/mqtt",
+    topic = "DUCKBEECAUSE-XYZ$ALWAYSMISSU"
+  ) {
     const client = mqtt.connect(host, {
       clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
       port,
-      path ,
-      reconnectPeriod: 0
+      path,
+      reconnectPeriod: 0,
     });
     client.on("connect", () => {
       publisMqtt = (mss) => {
@@ -52,20 +58,30 @@ onMounted(() => {
     });
   }
 
-  $fetch("/api/steamimg").then((data) => {
-    if (data.body.video.title) videoTitle.value = data?.body.video.title;
-    if (data.body.video.descption) videoDesc.value = data?.body.video.descption;
-    if (data.body.video.cover) videoCoverURL.value = data.body.video.cover;
-    setupMQTT(data.body.mqtt.host,data.body.mqtt.port,data.body.mqtt.path,data.body.mqtt.topic)
-  });
+  $fetch("/api/steamimg")
+    .then((data) => {
+      if (data.body.video.title) videoTitle.value = data?.body.video.title;
+      if (data.body.video.descption)
+        videoDesc.value = data?.body.video.descption;
+      if (data.body.video.cover) videoCoverURL.value = data.body.video.cover;
+      setupMQTT(
+        data.body.mqtt.host,
+        data.body.mqtt.port,
+        data.body.mqtt.path,
+        data.body.mqtt.topic
+      );
+    })
+    .finally(() => (isLoading.value = false));
 });
 </script>
 <template>
   <div class="p-[2rem]">
     <div class="flex flex-col lg:flex-row w-full gap-2">
       <div class="w-full lg:w-8/12">
-        <v-card class="aspect-video max-h-fit" rounded="xl">
-          <Player :cover="videoCoverURL"></Player>
+        <v-card :loading="isLoading" class="aspect-video max-h-fit" rounded="xl">
+          <v-no-ssr>
+          <Player v-if="!isLoading" :cover="videoCoverURL"></Player>
+        </v-no-ssr>
         </v-card>
         <section class="mt-2">
           <p class="text-xl font-bold px-2">
