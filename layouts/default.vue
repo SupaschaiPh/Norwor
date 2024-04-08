@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import colors from "vuetify/util/colors";
 const router = useRouter();
 
@@ -22,7 +22,7 @@ onMounted(() => {
 
 $fetch("/api/session").then(
   (res)=>{
-    if(res && res?.acc?.id){
+    if(res && res.acc && res.acc.id){
       displayName.value = res.acc.displayName
       userName.value = res.acc.username
       isLogin.value = true

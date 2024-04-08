@@ -1,6 +1,10 @@
 <script setup>
 import colors from "vuetify/util/colors";
 
+const router = useRouter();
+
+const isLoading = ref(false);
+
 const title = ref("");
 const desc = ref("");
 const source = ref("https://");
@@ -26,6 +30,51 @@ const onChangeCoverFile = function (e) {
   }
 };
 
+const onSaveSteamimgSetting = function () {
+  isLoading.value = true;
+  $fetch("/api/steamimg", {
+    method: "patch",
+    body: {
+      video: {
+        title: title.value,
+        cover: coverURL.value,
+        description: desc.value,
+        source: source.value,
+      },
+    },
+  })
+    .then((res) => console.log(res))
+    .catch((res) => console.error(res))
+    .finally(() => {
+      setTimeout(() => {
+        isLoading.value = false;
+      }, 1000);
+    });
+};
+
+const onSaveChatSetting = function () {
+  isLoading.value = true;
+  $fetch("/api/steamimg", {
+    method: "patch",
+    body: {
+      mqtt: {
+        host: chatHost.value,
+        port: chatPort.value,
+        topic: chatTopic.value,
+        qos: chatQos.value,
+        path: chatPath.value,
+      },
+    },
+  })
+    .then((res) => console.log(res))
+    .catch((res) => console.error(res))
+    .finally(() => {
+      setTimeout(() => {
+        isLoading.value = false;
+      }, 1000);
+    });
+};
+
 onMounted(() => {
   $fetch("/api/steamimg").then((data) => {
     title.value = data.body.video.title;
@@ -36,6 +85,7 @@ onMounted(() => {
     chatPort.value = data.body.mqtt.port;
     chatTopic.value = data.body.mqtt.topic;
     chatQos.value = data.body.mqtt.qos;
+    chatPath.value = data.body.mqtt.path;
   });
 });
 </script>
@@ -77,7 +127,13 @@ onMounted(() => {
         <div>
           <v-card flat title="Steamimg setting">
             <template v-slot:append>
-              <v-btn color="primary" rounded="lg">Save</v-btn>
+              <v-btn
+                color="primary"
+                @click="onSaveSteamimgSetting"
+                :loading="isLoading"
+                rounded="lg"
+                >Save</v-btn
+              >
             </template>
           </v-card>
         </div>
@@ -103,7 +159,13 @@ onMounted(() => {
     <div>
       <v-card flat title="Chat setting">
         <template v-slot:append>
-          <v-btn color="primary" rounded="lg">Save</v-btn>
+          <v-btn
+            color="primary"
+            @click="onSaveChatSetting"
+            :loading="isLoading"
+            rounded="lg"
+            >Save</v-btn
+          >
         </template>
       </v-card>
       <v-card-text>

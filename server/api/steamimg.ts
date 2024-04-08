@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
       if (body.video){
         const sqlVal = {
           title: body.video.title,
-          descption: body.video.desc,
+          description: body.video.description,
           cover:body.video.cover ,
           source:body.video.source 
         }
@@ -43,6 +43,7 @@ export default defineEventHandler(async (event) => {
           port: body.mqtt.port,
           topic: body.mqtt.topic,
           qos: body.mqtt.qos,
+          path : body.mqtt.path,
           connect_timeout:body.mqtt.connect_timeout
         }
         const updateRes = await useDrizzle()

@@ -4,9 +4,9 @@ import mqtt from "mqtt";
 
 const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
-const videoTitle = ref("LA LA LA Live LA Like");
+const videoTitle = ref("");
 const videoDesc = ref(
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras fermentum odio eu feugiat pretium. Quis blandit turpis cursus in hac habitasse platea dictumst. Id consectetur purus ut faucibus pulvinar elementum integer. Suspendisse in est ante in nibh mauris cursus mattis molestie. Enim nunc faucibus a pellentesque sit amet porttitor. Ipsum dolor sit amet consectetur adipiscing. Aliquet nibh praesent tristique magna sit amet. Lacus sed turpis tincidunt id. Nunc scelerisque viverra mauris in. Adipiscing vitae proin sagittis nisl rhoncus."
+  ""
 );
 const videoCoverURL = ref("");
 const message = ref("");
@@ -59,11 +59,10 @@ onMounted(() => {
   }
 
   $fetch("/api/steamimg")
-    .then((data) => {
-      if (data.body.video.title) videoTitle.value = data?.body.video.title;
-      if (data.body.video.descption)
-        videoDesc.value = data?.body.video.descption;
-      if (data.body.video.cover) videoCoverURL.value = data.body.video.cover;
+    .then((data) => { 
+      videoTitle.value = data?.body.video.title;
+      videoDesc.value = data?.body.video.description;
+      videoCoverURL.value = data.body.video.cover;
       setupMQTT(
         data.body.mqtt.host,
         data.body.mqtt.port,
@@ -105,12 +104,12 @@ onMounted(() => {
             </template>
           </v-list-item>
           <div class="mt-5 p-3 bg-orange-50 rounded-lg">
-            <v-card-text>{{ videoDesc }}</v-card-text>
+            <v-card-text>{{ videoDesc.replace(" ","&nbsp;") }}</v-card-text>
           </div>
         </section>
       </div>
       <div class="lg:w-4/12 lg:px-3">
-        <v-card class="h-full relative" title="ChitChat" rounded="xl">
+        <v-card class="h-[90vh] relative" title="ChitChat" rounded="xl">
           <hr />
           <v-card-text
             class="flex flex-col gap-2 h-[72vh] overflow-y-scroll"
