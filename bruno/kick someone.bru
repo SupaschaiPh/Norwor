@@ -1,0 +1,17 @@
+meta {
+  name: kick someone
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:3000/api/account
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id":3
+  }
+}
