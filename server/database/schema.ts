@@ -21,27 +21,26 @@ export const videos = sqliteTable("video", {
     .default(
       "Video" + new Date().toISOString() + Math.floor(Math.random() * 10000000)
     ),
-  descption: text("descption").default(""),
+  description: text("description").default(""),
   cover: text("cover").notNull().default(""),
 });
 
 export const mqtt = sqliteTable("mqtt", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   host: text("host").notNull().default(""),
+  path: text("path").notNull().default(""),
   port: integer("port").notNull().default(8003),
   topic: text("topic").notNull().default("DUCKBEECAUSE-XYZ$ALWAYSMISSU"),
   qos: integer("qos").notNull().default(0),
   connect_timeout: integer("connect_timeout").notNull().default(4000),
-
 });
 
 export const servers = sqliteTable("servers", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
-  host:text("host").notNull().default(""),
+  host: text("host").notNull().default(""),
   port: integer("port").notNull().default(80),
-  path:text("path").default("")
-
+  path: text("path").default(""),
 });
 
 /*
