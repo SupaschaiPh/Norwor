@@ -16,7 +16,7 @@ const status = ref([
     status: "ok",
   },
   {
-    title: "MQTT Server",
+    title: "MQTT Broker",
     status_code: 400,
     status: "ok",
   },
