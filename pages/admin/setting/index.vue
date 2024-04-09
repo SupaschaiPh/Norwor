@@ -33,9 +33,9 @@ const onChangeCoverFile = function (e) {
   }
 };
 
-const onSaveSteamimgSetting = function () {
+const onSaveStreamingSetting = function () {
   isLoading.value = true;
-  $fetch("/api/steamimg", {
+  $fetch("/api/streaming", {
     method: "patch",
     body: {
       video: {
@@ -57,7 +57,7 @@ const onSaveSteamimgSetting = function () {
 
 const onSaveChatSetting = function () {
   isLoading.value = true;
-  $fetch("/api/steamimg", {
+  $fetch("/api/streaming", {
     method: "patch",
     body: {
       mqtt: {
@@ -79,7 +79,7 @@ const onSaveChatSetting = function () {
 };
 
 onMounted(() => {
-  $fetch("/api/steamimg").then((data) => {
+  $fetch("/api/streaming").then((data) => {
     title.value = data.body.video.title;
     desc.value = data.body.video.description;
     coverURL.value = data.body.video.cover;
@@ -128,11 +128,11 @@ onMounted(() => {
       </span>
       <span class="md:w-8/12">
         <div>
-          <v-card flat title="Steamimg setting">
+          <v-card flat title="Streaming setting">
             <template v-slot:append>
               <v-btn
                 color="primary"
-                @click="onSaveSteamimgSetting"
+                @click="onSaveStreamingSetting"
                 :loading="isLoading"
                 rounded="lg"
                 >Save</v-btn

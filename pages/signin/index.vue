@@ -39,7 +39,7 @@ const checkUsernameHandler = function () {
     });
 };
 
-const onSinginHandler = function () {
+const onSigninHandler = function () {
   if (password.value != "") {
     loading.value = true;
     $fetch("/api/signin", {
@@ -139,7 +139,7 @@ const onSinginHandler = function () {
                 variant="flat"
                 color="primary"
                 :loading="loading"
-                @click="onSinginHandler"
+                @click="onSigninHandler"
                 >Sign in</v-btn
               >
             </div>

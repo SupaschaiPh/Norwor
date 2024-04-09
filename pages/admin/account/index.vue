@@ -12,7 +12,7 @@ const isLoading = ref(false);
 
 const onKickSomeone = function (id) {
   isLoading.value = true;
-  if (acc.value.id == id) {
+  if (acc?.value?.id == id) {
     console.info("wtf what are you doing?");
   }
   $fetch("/api/account", {
@@ -72,7 +72,7 @@ fetchData();
             <template v-slot:item.action="{ item }">
               <v-btn
                 rounded="lg"
-                @click="() => onKickSomeone(item.id)"
+                @click="() => onKickSomeone(item?.id)"
                 color="error"
                 flat
                 variant="tonal"

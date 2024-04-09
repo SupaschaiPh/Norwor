@@ -61,7 +61,7 @@ onMounted(() => {
     });
   }
 
-  $fetch("/api/steamimg")
+  $fetch("/api/streaming")
     .then((data) => { 
       videoTitle.value = data?.body.video.title;
       videoDesc.value = data?.body.video.description;

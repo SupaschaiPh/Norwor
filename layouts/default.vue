@@ -139,7 +139,7 @@ const logoutHandler = function(){
           density="comfortable"
           @click="
             () => {
-              router.push('/singin');
+              router.push('/signin');
             }
           "
           icon="mdi-login"
@@ -154,7 +154,7 @@ const logoutHandler = function(){
       class="border-0"
       :rail="railModeSidebar"
     >
-      <v-list-item v-if="!railModeSidebar" title="Gobal"></v-list-item>
+      <v-list-item v-if="!railModeSidebar" title="General"></v-list-item>
 
       <v-list-item
         @click="
@@ -201,7 +201,7 @@ const logoutHandler = function(){
         prepend-icon="mdi-access-point"
         rounded="lg"
         link
-        title="Steam Setting"
+        title="Stream Setting"
         @click="
           () => {
             router.push('/admin/setting');
@@ -213,7 +213,7 @@ const logoutHandler = function(){
         prepend-icon="mdi-account-group"
         rounded="lg"
         link
-        title="Mange Account"
+        title="Manage Account"
         @click="
           () => {
             router.push('/admin/account');
