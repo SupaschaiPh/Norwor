@@ -1,6 +1,9 @@
 <script setup>
 import colors from "vuetify/util/colors";
 
+const isRail = useIsRail()
+isRail.value = false
+
 const status = ref([
   {
     title: "Web Server",

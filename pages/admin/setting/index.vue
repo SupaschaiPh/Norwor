@@ -1,6 +1,9 @@
 <script setup>
 import colors from "vuetify/util/colors";
 
+const isRail = useIsRail()
+isRail.value = false
+
 const router = useRouter();
 
 const isLoading = ref(false);

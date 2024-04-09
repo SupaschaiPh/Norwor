@@ -2,6 +2,9 @@
 import colors from "vuetify/util/colors";
 import mqtt from "mqtt";
 
+const isRail = useIsRail()
+isRail.value = true
+
 const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
 const videoTitle = ref("");
