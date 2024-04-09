@@ -26,9 +26,9 @@
     "mqtt": "^5.5.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^3.11.1",
+    "openplayerjs": "^1.16.11",
     "videojs-contrib-quality-levels": "^4.1.0",
     "videojs-hls-quality-selector": "^2.0.0",
-    "videojs-quality-selector-hls": "^1.1.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "xml-js": "^1.6.11"

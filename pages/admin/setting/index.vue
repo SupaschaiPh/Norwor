@@ -83,6 +83,7 @@ onMounted(() => {
     title.value = data.body.video.title;
     desc.value = data.body.video.description;
     coverURL.value = data.body.video.cover;
+    source.value = data.body.video.source;
 
     chatHost.value = data.body.mqtt.host;
     chatPort.value = data.body.mqtt.port;

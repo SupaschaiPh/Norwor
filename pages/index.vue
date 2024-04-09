@@ -2,16 +2,16 @@
 import colors from "vuetify/util/colors";
 import mqtt from "mqtt";
 
-const isRail = useIsRail()
-isRail.value = true
+const isRail = useIsRail();
+isRail.value = true;
 
 const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
 const videoTitle = ref("");
-const videoDesc = ref(
-  ""
-);
+const videoDesc = ref("");
 const videoCoverURL = ref("");
+const videoSource = ref("");
+
 const message = ref("");
 const chats = ref([]);
 const isLoading = ref(true);
@@ -62,10 +62,11 @@ onMounted(() => {
   }
 
   $fetch("/api/streaming")
-    .then((data) => { 
+    .then((data) => {
       videoTitle.value = data?.body.video.title;
       videoDesc.value = data?.body.video.description;
-      videoCoverURL.value = data.body.video.cover;
+      videoCoverURL.value = data?.body.video.cover;
+      videoSource.value = data?.body.video.source;
       setupMQTT(
         data.body.mqtt.host,
         data.body.mqtt.port,
@@ -80,11 +81,20 @@ onMounted(() => {
   <div class="p-[2rem]">
     <div class="flex flex-col lg:flex-row w-full gap-2">
       <div class="w-full lg:w-8/12">
-        <v-card :loading="isLoading" class="aspect-video max-h-fit" rounded="xl">
-          <v-no-ssr>
-          <Player v-if="!isLoading" :cover="videoCoverURL"></Player>
-        </v-no-ssr>
+        <v-card
+          :loading="isLoading"
+          class="aspect-video max-h-fit"
+          rounded="xl"
+        >
+          <ClientOnly>
+            <Player
+              v-if="!isLoading"
+              :src="videoSource"
+              :cover="videoCoverURL"
+            ></Player>
+          </ClientOnly>
         </v-card>
+
         <section class="mt-2">
           <p class="text-xl font-bold px-2">
             {{ videoTitle }}
@@ -107,7 +117,7 @@ onMounted(() => {
             </template>
           </v-list-item>
           <div class="mt-5 p-3 bg-orange-50 rounded-lg">
-            <v-card-text>{{ videoDesc.replace(" ","&nbsp;") }}</v-card-text>
+            <v-card-text>{{ videoDesc.replace(" ", "&nbsp;") }}</v-card-text>
           </div>
         </section>
       </div>
