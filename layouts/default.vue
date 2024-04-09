@@ -65,7 +65,9 @@ const logoutHandler = function(){
         "
       >
       </v-app-bar-nav-icon>
-      <v-toolbar-title class="font-bold">X Tube</v-toolbar-title>
+      <v-toolbar-title @click="()=>{
+        router.push('/')
+      }" class="font-bold cursor-pointer">X Tube</v-toolbar-title>
       <!--<v-text-field
         v-model="searchKeyword"
         append-inner-icon="mdi-magnify"
@@ -183,6 +185,19 @@ const logoutHandler = function(){
       <v-divider v-if="!railModeSidebar"></v-divider>
 
       <v-list-item
+        prepend-icon="mdi-file-document-multiple"
+        rounded="lg"
+        link
+        title="Docs"
+        @click="
+          () => {
+            router.push('/docs');
+          }
+        "
+      ></v-list-item>
+
+
+      <v-list-item
         prepend-icon="mdi-access-point"
         rounded="lg"
         link
@@ -205,6 +220,8 @@ const logoutHandler = function(){
           }
         "
       ></v-list-item>
+
+     
       <div v-if="railModeSidebar" class="mt-2"></div>
     </v-navigation-drawer>
 

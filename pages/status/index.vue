@@ -1,6 +1,9 @@
 <script setup>
 import colors from "vuetify/util/colors";
 
+const isRail = useIsRail()
+isRail.value = false
+
 const status = ref([
   {
     title: "Web Server",
@@ -13,7 +16,7 @@ const status = ref([
     status: "ok",
   },
   {
-    title: "MQTT Server",
+    title: "MQTT Broker",
     status_code: 400,
     status: "ok",
   },

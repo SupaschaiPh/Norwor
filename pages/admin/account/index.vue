@@ -1,20 +1,49 @@
 <script setup>
+const isRail = useIsRail();
+isRail.value = false;
+
+const acc = useAcc();
+
 const selected = ref([]);
 const tab = ref("all");
 const search = ref("");
-const file = ref(null);
-const cover = ref(null);
-const coverPreivew = ref("");
-const onUpload = ref(false);
-const step = ref(0);
 const items = ref([]);
+const isLoading = ref(false);
 
-$fetch("/api/account").then((res) => {
-  items.value = res.body.map((v) => {
-    v.action = v.id;
-    return v;
+const onKickSomeone = function (id) {
+  isLoading.value = true;
+  if (acc.value.id == id) {
+    console.info("wtf what are you doing?");
+  }
+  $fetch("/api/account", {
+    method: "delete",
+    body: {
+      id,
+    },
+  })
+    .then((res) => {
+      if (res.status == 200) {
+        setTimeout(() => {
+        items.value = items.value.filter((v) => v.id != id);
+      }, 1500);
+      }
+    })
+    .finally(() => {
+      setTimeout(() => {
+        isLoading.value = false;
+      }, 1000);
+    });
+};
+const fetchData = function () {
+  $fetch("/api/account").then((res) => {
+    items.value = res.body.map((v) => {
+      v.action = v.id;
+      return v;
+    });
   });
-});
+};
+
+fetchData();
 </script>
 <template>
   <div class="p-[2rem]">
@@ -33,17 +62,22 @@ $fetch("/api/account").then((res) => {
       ></v-text-field>
       <v-window v-model="tab">
         <v-window-item value="all">
-          
           <v-data-table
             v-model="selected"
-           
             :items="items"
             item-value="title"
             :search="search"
             color="primary"
           >
             <template v-slot:item.action="{ item }">
-              <v-btn rounded="lg" color="error" flat variant="tonal"
+              <v-btn
+                rounded="lg"
+                @click="() => onKickSomeone(item.id)"
+                color="error"
+                flat
+                variant="tonal"
+                :disabled="isLoading"
+                :loading="isLoading"
                 >Kick</v-btn
               >
             </template>
