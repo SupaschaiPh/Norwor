@@ -11,8 +11,8 @@ const status = ref([
     status: "ok",
   },
   {
-    title: "HLS Server",
-    status_code: 200,
+    title: "Steaming Server",
+    status_code: 400,
     status: "ok",
   },
   {
@@ -26,7 +26,11 @@ onMounted(() => {
   $fetch("/api/health").then((data) => {
     status.value[0].status_code = data.status
   });
-  
+
+  $fetch("https://itcdev.jarukrit.net/health").then((data) => {
+    status.value[1].status_code = data.status
+    
+  });
   function setupMQTT(
     host = "mqtt://localhost",
     port = 8083,
