@@ -1,6 +1,6 @@
 <script setup>
 import colors from "vuetify/util/colors";
-
+import mqtt from "mqtt";
 const isRail = useIsRail()
 isRail.value = false
 
@@ -24,9 +24,44 @@ const status = ref([
 
 onMounted(() => {
   $fetch("/api/health").then((data) => {
-      status.value[0].status_code = data.status
+    status.value[0].status_code = data.status
   });
+  
+  function setupMQTT(
+    host = "mqtt://localhost",
+    port = 8083,
+    path = "/mqtt",
+    topic = "DUCKBEECAUSE-XYZ$ALWAYSMISSU"
+  ) {
+    const client = mqtt.connect(host, {
+      clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
+      port,
+      path,
+      reconnectPeriod: 0,
+    });
+    client.on("connect", () => {
+      client.subscribe(topic, (err) => {
+        if (!err) {
+          status.value[2].status_code = 200
+          console.log("subscribed");
+        } else {
+          status.value[2].status_code = 404
+        }
+      });
+    });
+  }
+  $fetch("/api/streaming")
+    .then((data) => { 
+          
+      setupMQTT(
+        data.body.mqtt.host,
+        data.body.mqtt.port,
+        data.body.mqtt.path,
+        data.body.mqtt.topic
+      );
+})
 });
+
 </script>
 
 <template>
