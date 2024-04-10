@@ -7,7 +7,7 @@ isRail.value = false
 const status = ref([
   {
     title: "Web Server",
-    status_code: 200,
+    status_code: 400,
     status: "ok",
   },
   {
@@ -21,6 +21,12 @@ const status = ref([
     status: "ok",
   },
 ]);
+
+onMounted(() => {
+  $fetch("/api/health").then((data) => {
+      status.value[0].status_code = data.status
+  });
+});
 </script>
 
 <template>
