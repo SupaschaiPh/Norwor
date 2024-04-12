@@ -5,7 +5,7 @@ definePageMeta({
 });
 </script>
 <template>
-  <main class="h-screen w-screen p-[2rem] bg-orange-50 overflow-auto">
+  <main class="h-screen w-screen p-[2rem] bg-primary-50 overflow-auto">
     <v-card rounded="xl">
       <v-card-text >
       <article class="prose-sm lg:prose min-w-full w-full p-4 px-8">

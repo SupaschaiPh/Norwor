@@ -12,6 +12,7 @@ export const tables = schema
 export function useDrizzle() {
   const __dirname = path.resolve();
   const config = useRuntimeConfig()
+  if(config.SHOW_DEBUG)
   console.log("Open data base at : ",config.DB_PATH!="" ? config.DB_PATH : path.join(__dirname,'server/database/db.db'))
   const sqlite = new Database( config.DB_PATH!="" ? config.DB_PATH : path.join(__dirname,'server/database/db.db'));
   const drizzleORM = drizzle(sqlite, { schema })

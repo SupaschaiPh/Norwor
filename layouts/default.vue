@@ -96,7 +96,7 @@ const logoutHandler = function(){
           <v-list rounded="lg">
             <!-- title="Displayname" subtitle="Displayname@gmail.com" -->
             <v-list-item class="mb-2">
-              <div class="text-center rounded-lg bg-orange-50 p-4 pb-6 min-w-[10rem]">
+              <div class="text-center rounded-lg bg-primary-50 p-4 min-w-[10rem]">
                 <div class="w-full flex justify-center">
                   <v-avatar
                     class="cursor-pointer"
@@ -119,12 +119,6 @@ const logoutHandler = function(){
               -->
             </v-list-item>
             <hr />
-            <v-list-item
-              density="compact"
-              prepend-icon="mdi-cog"
-              title="Setting"
-              @click=""
-            ></v-list-item>
             <v-list-item
               density="compact"
               prepend-icon="mdi-logout"
