@@ -2,7 +2,7 @@
 import '@fontsource/noto-sans-thai-looped'
 </script>
 <template>
-  <NuxtLoadingIndicator />
+  <NuxtLoadingIndicator :color="false" />
   <NuxtLayout>
     <v-app>
       <NuxtPage />

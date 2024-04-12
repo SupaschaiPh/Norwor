@@ -2,19 +2,18 @@
 import colors from "vuetify/util/colors";
 import mqtt from "mqtt";
 
-const isRail = useIsRail()
-isRail.value = true
+const isRail = useIsRail();
+isRail.value = true;
 
 const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
 const videoTitle = ref("");
-const videoDesc = ref(
-  ""
-);
+const videoDesc = ref("");
 const videoCoverURL = ref("");
 const message = ref("");
 const chats = ref([]);
 const isLoading = ref(true);
+const isMinimizeChat = ref(false);
 
 let publisMqtt = (mss) => {};
 
@@ -62,7 +61,7 @@ onMounted(() => {
   }
 
   $fetch("/api/streaming")
-    .then((data) => { 
+    .then((data) => {
       videoTitle.value = data?.body.video.title;
       videoDesc.value = data?.body.video.description;
       videoCoverURL.value = data.body.video.cover;
@@ -79,11 +78,15 @@ onMounted(() => {
 <template>
   <div class="p-[2rem]">
     <div class="flex flex-col lg:flex-row w-full gap-2">
-      <div class="w-full lg:w-8/12">
-        <v-card :loading="isLoading" class="aspect-video max-h-fit" rounded="xl">
+      <div :class="'w-full ' + (isMinimizeChat ? 'lg:w-full' : 'lg:w-8/12')">
+        <v-card
+          :loading="isLoading"
+          class="aspect-video max-h-fit"
+          rounded="xl"
+        >
           <v-no-ssr>
-          <Player v-if="!isLoading" :cover="videoCoverURL"></Player>
-        </v-no-ssr>
+            <Player v-if="!isLoading" :cover="videoCoverURL"></Player>
+          </v-no-ssr>
         </v-card>
         <section class="mt-2">
           <p class="text-xl font-bold px-2">
@@ -107,14 +110,18 @@ onMounted(() => {
             </template>
           </v-list-item>
           <div class="mt-5 p-3 bg-orange-50 rounded-lg">
-            <v-card-text>{{ videoDesc.replace(" ","&nbsp;") }}</v-card-text>
+            <v-card-text>{{ videoDesc.replace(" ", "&nbsp;") }}</v-card-text>
           </div>
         </section>
       </div>
-      <div class="lg:w-4/12 lg:px-3">
-        <v-card class="h-[90vh] relative" title="ChitChat" rounded="xl">
+      <div  :class="'lg:px-3 ' + (isMinimizeChat ? 'fixed bottom-0 right-0 backdrop:opacity-25' : 'lg:w-4/12')">
+        <v-card class="h-auto relative" title="ChitChat" :rounded="isMinimizeChat ? 'lg' : 'xl'">
+          <template v-slot:append>
+            <v-btn variant="tonal" @click="()=>isMinimizeChat = !isMinimizeChat" color="primary" density="compact" :icon="isMinimizeChat ?  'mdi-window-maximize' : 'mdi-minus'"></v-btn>
+          </template>
           <hr />
           <v-card-text
+            v-if="!isMinimizeChat"
             class="flex flex-col gap-2 h-[72vh] overflow-y-scroll"
             id="chit-chat-messages"
           >
@@ -127,7 +134,7 @@ onMounted(() => {
               ></v-card>
             </div>
           </v-card-text>
-          <div class="bottom-0 w-full">
+          <div v-if="!isMinimizeChat" class="bottom-0 w-full">
             <v-card-text>
               <div class="w-full flex gap-2">
                 <span class="w-full">
