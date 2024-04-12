@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import colors from "vuetify/util/colors";
 import '@fontsource/noto-sans-thai-looped'
 </script>
 <template>

@@ -65,7 +65,7 @@ const onSigninHandler = function () {
 };
 </script>
 <template>
-  <section class="w-full h-full flex justify-center items-center bg-orange-50">
+  <section class="w-full h-full flex justify-center items-center bg-primary-50">
     <div class="w-10/12 md:w-6/12 lg:w-4/12">
       <v-card elevation="1" rounded="xl">
         <div class="p-4" v-if="step == 0">

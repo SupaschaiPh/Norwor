@@ -108,13 +108,18 @@ onMounted(() => {
                 {{ channelName.slice(0, 1) }}
               </v-avatar>
             </template>
+            <template v-slot:append>
+              <v-btn v-show="isMinimizeChat"  @click="()=>isMinimizeChat = false" variant="tonal" color="primary" class="text-none" append-icon="mdi-window-maximize" rounded="lg">
+                Chitchat
+              </v-btn>
+            </template>
           </v-list-item>
-          <div class="mt-5 p-3 bg-orange-50 rounded-lg">
+          <div class="mt-5 p-3 bg-primary-50 rounded-lg">
             <v-card-text>{{ videoDesc.replace(" ", "&nbsp;") }}</v-card-text>
           </div>
         </section>
       </div>
-      <div  :class="'lg:px-3 ' + (isMinimizeChat ? 'fixed bottom-0 right-0 backdrop:opacity-25' : 'lg:w-4/12')">
+      <div v-show="!isMinimizeChat"  :class="'lg:px-3 ' + (isMinimizeChat ? 'fixed bottom-0 right-0 backdrop:opacity-25' : 'lg:w-4/12')">
         <v-card class="h-auto relative" title="ChitChat" :rounded="isMinimizeChat ? 'lg' : 'xl'">
           <template v-slot:append>
             <v-btn variant="tonal" @click="()=>isMinimizeChat = !isMinimizeChat" color="primary" density="compact" :icon="isMinimizeChat ?  'mdi-window-maximize' : 'mdi-minus'"></v-btn>
