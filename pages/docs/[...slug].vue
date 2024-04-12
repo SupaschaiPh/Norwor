@@ -5,10 +5,12 @@ definePageMeta({
 });
 </script>
 <template>
-  <main class="h-screen w-screen p-[2rem] bg-orange-50">
+  <main class="h-screen w-screen p-[2rem] bg-orange-50 overflow-auto">
     <v-card rounded="xl">
       <v-card-text >
+      <article class="prose-sm lg:prose min-w-full w-full p-4 px-8">
         <ContentDoc :path="'/' + route.params.slug[0]" />
+      </article>
         <!-- <template #not-found>
         <div class="h-screen w-screen flex justify-center items-center">
           <div>
