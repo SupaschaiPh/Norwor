@@ -78,7 +78,7 @@ useSeoMeta({
     <div class="w-10/12 md:w-6/12 lg:w-4/12">
       <v-card elevation="1" rounded="xl">
         <div class="p-4" v-if="step == 0">
-          <div style="display: flex; align-items: center;">
+          <div style="display: flex; align-items: center; padding-left: 15px;">
             <img src="/public/favicon.ico" width="40px" @click="()=>{ router.push('/') }" style="cursor: pointer;">
             <v-card-title style="flex: 1; cursor: pointer;" @click="()=>{ router.push('/') }">SuperStream</v-card-title>
           </div>
@@ -105,6 +105,10 @@ useSeoMeta({
         </div>
 
         <div class="p-4" v-if="step == 1">
+          <div style="display: flex; align-items: center; padding-left: 15px;">
+            <img src="/public/favicon.ico" width="40px" @click="()=>{ router.push('/') }" style="cursor: pointer;">
+            <v-card-title style="flex: 1; cursor: pointer;" @click="()=>{ router.push('/') }">SuperStream</v-card-title>
+          </div>
           <v-card-title>
             <p class="font-bold">Sign in</p>
           </v-card-title>
