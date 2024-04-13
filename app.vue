@@ -5,7 +5,7 @@ import '@fontsource/noto-sans-thai-looped'
 <template>
   <NuxtLoadingIndicator :color="false" />
   <NuxtLayout>
-    <v-app>
+    <v-app >
       <NuxtPage />
     </v-app>
   </NuxtLayout>

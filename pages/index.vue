@@ -76,7 +76,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="p-[2rem]">
+  <div class="p-[2rem]" >
     <div class="flex flex-col lg:flex-row w-full gap-2">
       <div :class="'w-full ' + (isMinimizeChat ? 'lg:w-full' : 'lg:w-8/12')">
         <v-card
@@ -109,7 +109,7 @@ onMounted(() => {
               </v-avatar>
             </template>
             <template v-slot:append>
-              <v-btn v-show="isMinimizeChat"  @click="()=>isMinimizeChat = false" variant="tonal" color="primary" class="text-none" append-icon="mdi-window-maximize" rounded="lg">
+              <v-btn  v-show="isMinimizeChat"  @click="()=>isMinimizeChat = false" variant="tonal" color="primary" class="text-none" append-icon="mdi-window-maximize" rounded="lg">
                 Chitchat
               </v-btn>
             </template>
@@ -126,6 +126,7 @@ onMounted(() => {
           </template>
           <hr />
           <v-card-text
+          v-auto-animate
             v-if="!isMinimizeChat"
             class="flex flex-col gap-2 h-[72vh] overflow-y-scroll"
             id="chit-chat-messages"

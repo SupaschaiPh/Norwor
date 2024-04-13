@@ -15,7 +15,8 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
-    '@nuxt/content'
+    '@nuxt/content',
+    '@formkit/auto-animate/nuxt'
   ],
   vite: {
     vue: {

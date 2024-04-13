@@ -25,12 +25,19 @@ const status = ref([
 onMounted(() => {
   $fetch("/api/health").then((data) => {
     status.value[0].status_code = data.status
-  });
+  }).catch(
+    ()=>{
+    status.value[0].status_code = 400
+    }
+  );
 
   $fetch("https://itcdev.jarukrit.net/health").then((data) => {
     status.value[1].status_code = data.status
-    
-  });
+  }).catch(
+    ()=>{
+    status.value[1].status_code = 400
+    }
+  );;
   function setupMQTT(
     host = "mqtt://localhost",
     port = 8083,
@@ -49,7 +56,7 @@ onMounted(() => {
           status.value[2].status_code = 200
           console.log("subscribed");
         } else {
-          status.value[2].status_code = 404
+          status.value[2].status_code = 400
         }
       });
     });
