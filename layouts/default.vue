@@ -54,7 +54,7 @@ const logoutHandler = function(){
   isLogin.value = false
 }
 
-useSeoMeta({
+useSeoMeta({ 
   title: 'SuperStream',
   ogTitle: 'SuperStream',
   description: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
