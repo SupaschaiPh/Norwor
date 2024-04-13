@@ -32,7 +32,7 @@ onMounted(() => {
         // this ensures Plyr to use Hls to update quality level
         // Ref: https://github.com/sampotts/plyr/blob/master/src/js/html5.js#L77
         forced: true,        
-        onChange: (e) => updateQuality(e),
+        onChange: (e) => updateQuality(e)
       }
 
       // Initialize new Plyr player with quality options
@@ -44,6 +44,14 @@ onMounted(() => {
     // default options with no quality update in case Hls is not supported
     const player = new Plyr(video, defaultOptions);
   }
+
+  setTimeout(
+    ()=>{
+      document.getElementsByClassName("plyr")[0].classList.add("h-full")
+    document.getElementsByClassName("plyr")[0].classList.add("w-full")
+    },100
+  )
+  
 
   function updateQuality(newQuality) {
     window.hls.levels.forEach((level, levelIndex) => {
@@ -67,20 +75,15 @@ onMounted(() => {
 </script>
 <template>
   <div class="w-full h-full relative">
-    <video controls crossorigin playsinline style="--plyr-color-main: #FC6736;" poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png">'
+    <video class="w-full h-full" controls  crossorigin  style="--plyr-color-main: #FC6736;width:100%;height: 100%;" poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png">'
       <source
       type="application/x-mpegURL" 
-      src="http://192.168.100.105/stream/hls/stream.m3u8">
+      src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">
     </video>
-    <div class="w-full h-fit top-0 absolute z-40"></div>
   </div>
 </template>
-<style scoped>
-.container {
-	margin: 20px auto;
-	width: 600px;
-}
-video {
+<style >
+video,.plyr {
   height: 100%;
 	width: 100%;
 }

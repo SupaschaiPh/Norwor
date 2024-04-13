@@ -7,17 +7,17 @@ isRail.value = false
 const status = ref([
   {
     title: "Web Server",
-    status_code: 400,
+    status_code: 600,
     status: "ok",
   },
   {
     title: "Steaming Server",
-    status_code: 400,
+    status_code: 600,
     status: "ok",
   },
   {
     title: "MQTT Broker",
-    status_code: 400,
+    status_code: 600,
     status: "ok",
   },
 ]);

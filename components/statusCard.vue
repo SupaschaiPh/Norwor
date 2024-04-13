@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 <template>
 
-  <v-card flat :color="colors.grey.lighten5" rounded="lg" :title="props?.title">
+  <v-card flat :color="colors.grey.lighten5" rounded="lg"  :title="props?.title">
     <template v-slot:prepend>
       <v-card flat :color="colors.grey.lighten3">
         <div class="p-1">
@@ -24,12 +24,19 @@ const props = defineProps({
           <p>UP</p>
         </div>
       </v-card>
+      <v-card flat :color="colors.amber.lighten5"  v-else-if="Math.floor(props?.status_code/100) == 6">
+        <div class="p-1 flex items-center gap-1 text-amber-500">
+          <v-icon class="animate-pulse" :color="colors.amber.darken1" icon="mdi-adjust"></v-icon>
+          <p>WAITING</p>
+        </div>
+      </v-card>
       <v-card flat :color="colors.red.lighten5" v-else>
         <div class="p-1 flex items-center gap-1 text-red-700">
           <v-icon class="animate-pulse" color="error" icon="mdi-adjust"></v-icon>
           <p>DOWN</p>
         </div>
       </v-card>
+      
     </template>
   </v-card>
 </template>

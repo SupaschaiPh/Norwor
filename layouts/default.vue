@@ -53,7 +53,18 @@ const logoutHandler = function(){
   $fetch("/api/logout")
   isLogin.value = false
 }
+
+useSeoMeta({
+  title: 'SuperStream',
+  ogTitle: 'SuperStream',
+  description: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
+  ogDescription: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
+  // ogImage: 'https://example.com/image.png',
+  // twitterCard: 'summary_large_image',
+})
 </script>
+
+
 <template>
   <v-layout>
     <v-app-bar :elevation="0" density="comfortable">
@@ -65,9 +76,8 @@ const logoutHandler = function(){
         "
       >
       </v-app-bar-nav-icon>
-      <v-toolbar-title @click="()=>{
-        router.push('/')
-      }" class="font-bold cursor-pointer">X Tube</v-toolbar-title>
+    <img src="/public/favicon.ico" width="30px" @click="()=>{ router.push('/') }" style="cursor: pointer;">
+    <v-toolbar-title class="font-bold cursor-pointer" @click="()=>{ router.push('/') }" style="flex: 1;">SuperStream</v-toolbar-title>
       <!--<v-text-field
         v-model="searchKeyword"
         append-inner-icon="mdi-magnify"
@@ -96,7 +106,7 @@ const logoutHandler = function(){
           <v-list rounded="lg">
             <!-- title="Displayname" subtitle="Displayname@gmail.com" -->
             <v-list-item class="mb-2">
-              <div class="text-center rounded-lg bg-orange-50 p-4 pb-6 min-w-[10rem]">
+              <div class="text-center rounded-lg bg-primary-50 p-4 min-w-[10rem]">
                 <div class="w-full flex justify-center">
                   <v-avatar
                     class="cursor-pointer"
@@ -119,12 +129,6 @@ const logoutHandler = function(){
               -->
             </v-list-item>
             <hr />
-            <v-list-item
-              density="compact"
-              prepend-icon="mdi-cog"
-              title="Setting"
-              @click=""
-            ></v-list-item>
             <v-list-item
               density="compact"
               prepend-icon="mdi-logout"
