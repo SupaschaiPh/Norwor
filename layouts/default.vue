@@ -53,7 +53,18 @@ const logoutHandler = function(){
   $fetch("/api/logout")
   isLogin.value = false
 }
+
+useSeoMeta({
+  title: 'SuperStream',
+  ogTitle: 'SuperStream',
+  description: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
+  ogDescription: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
+  // ogImage: 'https://example.com/image.png',
+  // twitterCard: 'summary_large_image',
+})
 </script>
+
+
 <template>
   <v-layout>
     <v-app-bar :elevation="0" density="comfortable">
@@ -65,9 +76,8 @@ const logoutHandler = function(){
         "
       >
       </v-app-bar-nav-icon>
-      <v-toolbar-title @click="()=>{
-        router.push('/')
-      }" class="font-bold cursor-pointer">X Tube</v-toolbar-title>
+    <img src="/public/favicon.ico" width="30px" @click="()=>{ router.push('/') }" style="cursor: pointer;">
+    <v-toolbar-title class="font-bold cursor-pointer" @click="()=>{ router.push('/') }" style="flex: 1;">SuperStream</v-toolbar-title>
       <!--<v-text-field
         v-model="searchKeyword"
         append-inner-icon="mdi-magnify"
