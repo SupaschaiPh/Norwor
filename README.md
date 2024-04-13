@@ -1,5 +1,7 @@
 # Nuxt 3 Minimal Starter
 
+[![Nuxt build check](https://github.com/SupaschaiPh/Norwor/actions/workflows/build_test.yml/badge.svg)](https://github.com/SupaschaiPh/Norwor/actions/workflows/build_test.yml)
+
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
