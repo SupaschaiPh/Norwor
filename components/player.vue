@@ -70,7 +70,7 @@ onMounted(() => {
     <video controls crossorigin playsinline style="--plyr-color-main: #FC6736;" poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png">'
       <source
       type="application/x-mpegURL" 
-      src="http://localhost:3000/stream/hls/stream.m3u8">
+      src="http://192.168.100.105/stream/hls/stream.m3u8">
     </video>
     <div class="w-full h-fit top-0 absolute z-40"></div>
   </div>
