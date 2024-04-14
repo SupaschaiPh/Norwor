@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+    middleware: ['admin-route'],
+    meta: { permitted: ['admin'] },
+})
 const isRail = useIsRail();
 isRail.value = false;
 

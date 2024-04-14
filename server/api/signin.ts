@@ -1,3 +1,4 @@
+import useAcc from "~/composables/useAcc";
 import { tables, useDrizzle } from "../utils/drizzle";
 
 export default defineEventHandler(async (event) => {

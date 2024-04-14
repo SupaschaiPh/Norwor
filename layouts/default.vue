@@ -44,18 +44,18 @@ const openNavbarHandler = function () {
   }
   openSidebar.value = true;
 };
-const logoutHandler = function () {
-  $fetch("/api/logout");
-  isLogin.value = false;
-};
+const logoutHandler = function(){
+  $fetch("/api/logout")
+  isLogin.value = false
+  acc.value = null;
+  navigateTo("/", {replace : true});
+}
 
-useSeoMeta({
-  title: "SuperStream",
-  ogTitle: "SuperStream",
-  description:
-    "ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์",
-  ogDescription:
-    "ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์",
+useSeoMeta({ 
+  title: 'SuperStream',
+  ogTitle: 'SuperStream',
+  description: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
+  ogDescription: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
   // ogImage: 'https://example.com/image.png',
   // twitterCard: 'summary_large_image',
 });
@@ -115,9 +115,9 @@ useSeoMeta({
           color="secondary"
           size="small"
         >
-          {{ displayName.slice(0, 1) }}
+          {{ displayName.slice(0, 1) }} 
         </v-avatar>
-
+{{ acc }}
         <v-menu activator="#avatarMeunAticvator">
           <v-list rounded="lg">
             <!-- title="Displayname" subtitle="Displayname@gmail.com" -->
