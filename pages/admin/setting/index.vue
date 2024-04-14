@@ -1,6 +1,9 @@
 <script setup>
 import colors from "vuetify/util/colors";
-
+definePageMeta({
+    middleware: ['admin-route'],
+    meta: { permitted: ['admin'] },
+})
 const isRail = useIsRail();
 isRail.value = false;
 

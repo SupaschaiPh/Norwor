@@ -52,6 +52,8 @@ const openNavbarHandler = function () {
 const logoutHandler = function(){
   $fetch("/api/logout")
   isLogin.value = false
+  acc.value = null;
+  navigateTo("/", {replace : true});
 }
 
 useSeoMeta({ 
@@ -99,9 +101,9 @@ useSeoMeta({
           color="secondary"
           size="small"
         >
-          {{ displayName.slice(0, 1) }}
+          {{ displayName.slice(0, 1) }} 
         </v-avatar>
-
+{{ acc }}
         <v-menu activator="#avatarMeunAticvator">
           <v-list rounded="lg">
             <!-- title="Displayname" subtitle="Displayname@gmail.com" -->

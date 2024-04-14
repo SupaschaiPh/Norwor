@@ -11,6 +11,7 @@ const usernameError = ref(null);
 const password = ref("");
 const passwordError = ref(null);
 const loading = ref(false);
+const acc = useAcc();
 
 const gotoPasswordStep = function () {
   step.value = 1;
@@ -52,7 +53,8 @@ const onSigninHandler = function () {
       .then((res) => {
         loading.value = false;
         if (res.status == 200) {
-          router.push("/")
+          router.push("/");
+          // acc.value = res.acc
         } else {
           passwordError.value = res.mss.replace("fail", "password should be");
         }
