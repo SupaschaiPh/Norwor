@@ -1,8 +1,8 @@
 <script setup>
 import colors from "vuetify/util/colors";
 import mqtt from "mqtt";
-const isRail = useIsRail()
-isRail.value = false
+const isRail = useIsRail();
+isRail.value = false;
 
 const status = ref([
   {
@@ -22,16 +22,9 @@ const status = ref([
   },
 ]);
 
-onMounted(() => {
-  $fetch("/api/health").then((data) => {
-    status.value[0].status_code = data.status
-  });
+const pollingFetch = ref(null);
 
-  $fetch("https://itcdev.jarukrit.net/health").then((data) => {
-    status.value[1].status_code = data.status
-    
-  });
-  function setupMQTT(
+function setupMQTT(
     host = "mqtt://localhost",
     port = 8083,
     path = "/mqtt",
@@ -46,26 +39,53 @@ onMounted(() => {
     client.on("connect", () => {
       client.subscribe(topic, (err) => {
         if (!err) {
-          status.value[2].status_code = 200
+          status.value[2].status_code = 200;
           console.log("subscribed");
         } else {
-          status.value[2].status_code = 404
+          status.value[2].status_code = 404;
         }
       });
     });
   }
-  $fetch("/api/streaming")
-    .then((data) => { 
-          
-      setupMQTT(
-        data.body.mqtt.host,
-        data.body.mqtt.port,
-        data.body.mqtt.path,
-        data.body.mqtt.topic
-      );
-})
-});
+  $fetch("/api/streaming").then((data) => {
+    setupMQTT(
+      data.body.mqtt.host,
+      data.body.mqtt.port,
+      data.body.mqtt.path,
+      data.body.mqtt.topic
+    );
+  });
 
+function fetchStatus() {
+  $fetch("/api/health")
+    .then((data) => {
+      status.value[0].status_code = data.status;
+    })
+    .catch((e) => {
+      status.value[0].status_code = 400;
+    });
+
+  $fetch("https://itcdev.jarukrit.net/health")
+    .then((data) => {
+      status.value[1].status_code = data.status;
+    })
+    .catch((e) => {
+      status.value[1].status_code = 400;
+    });
+  
+ 
+}
+
+onMounted(() => {
+  fetchStatus();
+  pollingFetch.value = setInterval(() => {
+    console.log("Polling")
+    fetchStatus();
+  }, 3000);
+});
+onBeforeRouteLeave(() => {
+  if (pollingFetch.value) clearInterval(pollingFetch.value);
+});
 </script>
 
 <template>

@@ -1,8 +1,8 @@
 <script setup>
 import colors from "vuetify/util/colors";
 
-const isRail = useIsRail()
-isRail.value = false
+const isRail = useIsRail();
+isRail.value = false;
 
 const router = useRouter();
 
@@ -83,6 +83,7 @@ onMounted(() => {
     title.value = data.body.video.title;
     desc.value = data.body.video.description;
     coverURL.value = data.body.video.cover;
+    source.value = data.body.video.source;
 
     chatHost.value = data.body.mqtt.host;
     chatPort.value = data.body.mqtt.port;
@@ -98,18 +99,12 @@ onMounted(() => {
       <span class="md:w-4/12">
         <v-card flat :color="colors.grey.lighten5" class="h-full" rounded="xl">
           <v-card-text>
-            <v-card rounded="xl" class="aspect-video" :image="coverURL">
+            <v-card rounded="xl" class="aspect-video">
+              <div :class="'flex justify-center h-full ' + (coverURL ? 'bg-black' : 'bg-primary-100')">
+                <NuxtImg class="h-full" :src="coverURL"></NuxtImg>
+              </div>
             </v-card>
             <v-card-title>
-              <v-text-field
-                color="primary"
-                rounded="lg"
-                label="Source"
-                variant="outlined"
-                density="compact"
-                v-model="source"
-                class="mt-4"
-              ></v-text-field>
               <v-file-input
                 v-model="coverFile"
                 color="primary"
@@ -148,12 +143,20 @@ onMounted(() => {
             variant="outlined"
             v-model="title"
           ></v-text-field>
+          <v-text-field
+            color="primary"
+            rounded="lg"
+            label="Source"
+            variant="outlined"
+            v-model="source"
+            class="mt-4"
+          ></v-text-field>
           <v-textarea
             rounded="lg"
             color="primary"
             label="Description"
             variant="outlined"
-            rows="15"
+            rows="12"
             v-model="desc"
           ></v-textarea>
         </v-card-text>
