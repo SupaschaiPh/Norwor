@@ -1,7 +1,6 @@
 export default defineEventHandler(async (event) => {
-    
-    return {
-        status:200,
-        mss:"ok"
-    }
-})
+  return {
+    status: 200,
+    mss: "OK",
+  };
+});

@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 //https://hub.nuxt.com/docs/recipes/drizzle
 export const users = sqliteTable("users", {
@@ -15,6 +15,8 @@ export const users = sqliteTable("users", {
 
 export const videos = sqliteTable("video", {
   id: integer("id").primaryKey({ autoIncrement: true }),
+  stream_id: text("stream_id").notNull().unique(),
+  stream_key: text("stream_key").notNull().unique(),
   source: text("source").notNull().default(""),
   title: text("title")
     .notNull()

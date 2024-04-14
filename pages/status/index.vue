@@ -21,77 +21,58 @@ const status = ref([
     status: "ok",
   },
 ]);
+const { data: webHealth, refresh: webHealthRefresh } = await useFetch("/api/health");
+const { data: nginxHealth, refresh: nginxHealthRefresh } = await useFetch("http://192.168.100.105/health");
+const { data: mqttHealth } = await useFetch("/api/streaming", { query: { mqtt: true}});
 
-const pollingFetch = ref(null);
+status.value[0].status_code = webHealth.value.status;
+status.value[1].status_code = nginxHealth.value.status;
 
 function setupMQTT(
-    host = "mqtt://localhost",
-    port = 8083,
-    path = "/mqtt",
-    topic = "DUCKBEECAUSE-XYZ$ALWAYSMISSU"
-  ) {
-    const client = mqtt.connect(host, {
-      clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
-      port,
-      path,
-      reconnectPeriod: 0,
-    });
-    client.on("connect", () => {
-      client.subscribe(topic, (err) => {
-        if (!err) {
-          status.value[2].status_code = 200;
-          console.log("subscribed");
-        } else {
-          status.value[2].status_code = 404;
-        }
-      });
-    });
-  }
-  $fetch("/api/streaming").then((data) => {
-    setupMQTT(
-      data.body.mqtt.host,
-      data.body.mqtt.port,
-      data.body.mqtt.path,
-      data.body.mqtt.topic
-    );
+  host = "mqtt://localhost",
+  port = 8083,
+  path = "/mqtt",
+  topic = "DUCKBEECAUSE-XYZ$ALWAYSMISSU"
+) {
+  const client = mqtt.connect(host, {
+    clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
+    port,
+    path,
+    reconnectPeriod: 0,
   });
-
-function fetchStatus() {
-  $fetch("/api/health")
-    .then((data) => {
-      status.value[0].status_code = data.status;
-    })
-    .catch((e) => {
-      status.value[0].status_code = 400;
+  client.on("connect", () => {
+    client.subscribe(topic, (err) => {
+      if (!err) {
+        status.value[2].status_code = 200;
+        console.log("subscribed");
+      } else {
+        status.value[2].status_code = 404;
+      }
     });
+  });
+}
+setupMQTT(
+  mqttHealth.value.body.mqtt.host,
+  mqttHealth.value.body.mqtt.port,
+  mqttHealth.value.body.mqtt.path,
+  mqttHealth.value.body.mqtt.topic
+);
 
-  $fetch("https://itcdev.jarukrit.net/health")
-    .then((data) => {
-      status.value[1].status_code = data.status;
-    })
-    .catch((e) => {
-      status.value[1].status_code = 400;
-    });
-  
- 
+const previousSetIntervalInstance = setInterval(myTimer, 1000);
+
+function myTimer() {
+  webHealthRefresh()
+  nginxHealthRefresh()
 }
 
-onMounted(() => {
-  fetchStatus();
-  pollingFetch.value = setInterval(() => {
-    console.log("Polling")
-    fetchStatus();
-  }, 3000);
-});
-onBeforeRouteLeave(() => {
-  if (pollingFetch.value) clearInterval(pollingFetch.value);
+onBeforeUnmount(() => {
+  clearInterval(previousSetIntervalInstance);
 });
 </script>
 
 <template>
   <div class="p-[2rem] flex flex-col gap-6">
     <v-card flat title="Server Status"> </v-card>
-
     <v-card flat variant="outlined" :color="colors.grey.lighten4" rounded="lg">
       <v-card-text class="flex flex-col gap-4">
         <v-card
