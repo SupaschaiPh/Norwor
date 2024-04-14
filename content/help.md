@@ -4,9 +4,10 @@ description: 'meta description of the page'
 --- -->
 # ศูนย์ช่วยเหลือ
 
-<details>
+<details open>
     <summary>ปัญหาการรับชม</summary>
     <br>
+    ปัญหาการรับชม
         <details>
             <summary>วิธีแก้ปัญหาเบื้องต้นในการรับชม เช่น ภาพไม่คมชัด หรือกระตุก</summary>
             <br>
@@ -17,11 +18,12 @@ description: 'meta description of the page'
             <br>
             ตามเงื่อนไขการสมัคร ผู้ใช้งานสามารถรับชมได้ครั้งละ 1 อุปกรณ์เท่านั้น หากอุปกรณ์ถูกระงับ กรุณารอ 15 นาที ระบบจะปลดล็อกอัตโนมัติ หากหลังจาก 15 นาทีแล้ว ยังไม่สามารถใช้งานได้ กรุณารีสตาร์ทอุปกรณ์ที่ใช้งานใหม่อีกครั้ง
         </details>
-        ปัญหาการรับชม
 </details>
-<details>
+
+<details open>
     <summary>วิธีการจัดการบัญชีผู้ใช้งาน</summary>
     <br>
+    วิธีการจัดการบัญชีผู้ใช้งาน
         <details>
             <summary>วิธีออกจากระบบ</summary>
             <br>
@@ -34,5 +36,5 @@ description: 'meta description of the page'
             กรณีมีปัญหาในการใช้งาน หรือต้องการลบบัญชีกรุณาติดต่อ Help Center 
             (E-mail: 65070242@kmitl.ac.th โทร.: 012-345-6789)
         </details>
-        วิธีการจัดการบัญชีผู้ใช้งาน
 </details>
+
