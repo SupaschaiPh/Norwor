@@ -10,6 +10,8 @@ const channelSubtitle = ref("Admin@admin.com");
 const videoTitle = ref("");
 const videoDesc = ref("");
 const videoCoverURL = ref("");
+const videoURL = ref("");
+
 const message = ref("");
 const chats = ref([]);
 const isLoading = ref(true);
@@ -64,7 +66,8 @@ onMounted(() => {
     .then((data) => {
       videoTitle.value = data?.body.video.title;
       videoDesc.value = data?.body.video.description;
-      videoCoverURL.value = data.body.video.cover;
+      videoCoverURL.value = data?.body.video.cover;
+      videoURL.value = data?.body.video.source;
       setupMQTT(
         data.body.mqtt.host,
         data.body.mqtt.port,
@@ -84,9 +87,12 @@ onMounted(() => {
           class="aspect-video max-h-fit"
           rounded="xl"
         >
-          <v-no-ssr>
-            <Player v-if="!isLoading" :cover="videoCoverURL"></Player>
-          </v-no-ssr>
+          <Player
+            v-if="!isLoading"
+            :src="videoURL"
+            videotype="application/x-mpegURL"
+            :cover="videoCoverURL"
+          ></Player>
         </v-card>
         <section class="mt-2">
           <p class="text-xl font-bold px-2">
@@ -109,7 +115,15 @@ onMounted(() => {
               </v-avatar>
             </template>
             <template v-slot:append>
-              <v-btn v-show="isMinimizeChat"  @click="()=>isMinimizeChat = false" variant="tonal" color="primary" class="text-none" append-icon="mdi-window-maximize" rounded="lg">
+              <v-btn
+                v-show="isMinimizeChat"
+                @click="() => (isMinimizeChat = false)"
+                variant="tonal"
+                color="primary"
+                class="text-none"
+                append-icon="mdi-window-maximize"
+                rounded="lg"
+              >
                 Chitchat
               </v-btn>
             </template>
@@ -119,10 +133,28 @@ onMounted(() => {
           </div>
         </section>
       </div>
-      <div v-show="!isMinimizeChat"  :class="'lg:px-3 ' + (isMinimizeChat ? 'fixed bottom-0 right-0 backdrop:opacity-25' : 'lg:w-4/12')">
-        <v-card class="h-auto relative" title="ChitChat" :rounded="isMinimizeChat ? 'lg' : 'xl'">
+      <div
+        v-show="!isMinimizeChat"
+        :class="
+          'lg:px-3 ' +
+          (isMinimizeChat
+            ? 'fixed bottom-0 right-0 backdrop:opacity-25'
+            : 'lg:w-4/12')
+        "
+      >
+        <v-card
+          class="h-auto relative"
+          title="ChitChat"
+          :rounded="isMinimizeChat ? 'lg' : 'xl'"
+        >
           <template v-slot:append>
-            <v-btn variant="tonal" @click="()=>isMinimizeChat = !isMinimizeChat" color="primary" density="compact" :icon="isMinimizeChat ?  'mdi-window-maximize' : 'mdi-minus'"></v-btn>
+            <v-btn
+              variant="tonal"
+              @click="() => (isMinimizeChat = !isMinimizeChat)"
+              color="primary"
+              density="compact"
+              :icon="isMinimizeChat ? 'mdi-window-maximize' : 'mdi-minus'"
+            ></v-btn>
           </template>
           <hr />
           <v-card-text
