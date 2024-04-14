@@ -1,7 +1,7 @@
 import { tables, useDrizzle } from "../utils/drizzle";
 
 export default defineEventHandler(async (event) => {
-  const config = await useRuntimeConfig();
+  const config = useRuntimeConfig();
   let mss = "";
   let statusCode = 404;
   const body = await readBody(event).catch(() => {});

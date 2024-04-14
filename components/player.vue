@@ -3,15 +3,21 @@ import Plyr from "plyr";
 import "plyr/dist/plyr.css";
 import Hls from "hls.js";
 
-const playerE = ref(null);
 const props = defineProps({
-  src: String,
-  cover: String,
-  videotype: String,
+  cover: {
+    require: true,
+    type: String,
+  },
+  video_src: {
+    require: true,
+    type: String,
+  },
 });
+
+
 onMounted(() => {
   const video = document.querySelector("video");
-  const source = video.getElementsByTagName("source")[0].src;
+  const source = props.video_src;
 
   // For more options see: https://github.com/sampotts/plyr/#options
   const defaultOptions = {};
@@ -43,6 +49,10 @@ onMounted(() => {
     });
     hls.attachMedia(video);
     window.hls = hls;
+    onUnmounted(() => {
+      hls.destroy();
+      console.info("HLS.js unloaded");
+    });
   } else {
     // default options with no quality update in case Hls is not supported
     const player = new Plyr(video, defaultOptions);
@@ -64,13 +74,6 @@ onMounted(() => {
     });
   }
 });
-
-// sources: [
-//         {
-//           withCredentials: false,
-//           type: "application/x-mpegURL",
-//           src: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-//         },
 </script>
 <template>
   <div class="w-full h-full relative">
@@ -79,9 +82,10 @@ onMounted(() => {
       controls
       crossorigin
       style="--plyr-color-main: #fc6736; width: 100%; height: 100%"
-      :poster="props.cover"
+      :poster="cover"
     >
-      <source :type="props.videotype" :src="props.src" />
+      '
+      <source type="application/x-mpegURL" :src="video_src" />
     </video>
   </div>
 </template>

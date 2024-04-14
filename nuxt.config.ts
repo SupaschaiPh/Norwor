@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules:{
-    "/*":{ssr:false},
+    "/**":{ssr:false},
     "api/**":{ cors: false },
   },
   runtimeConfig:{

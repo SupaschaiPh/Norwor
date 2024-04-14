@@ -9,12 +9,8 @@ const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
 const videoTitle = ref("");
 const videoDesc = ref("");
-const videoCoverURL = ref("");
-const videoURL = ref("");
-
 const message = ref("");
 const chats = ref([]);
-const isLoading = ref(true);
 const isMinimizeChat = ref(false);
 
 let publisMqtt = (mss) => {};
@@ -24,6 +20,13 @@ const onSendmessageHandler = function () {
   publisMqtt(message.value);
   message.value = "";
 };
+
+const { data: streamingData, pending: isLoading } = await useFetch(
+  "/api/streaming"
+);
+
+videoTitle.value = streamingData?.value.body.video.title;
+videoDesc.value = streamingData?.value.body.video.description;
 
 onMounted(() => {
   function setupMQTT(
@@ -61,21 +64,12 @@ onMounted(() => {
       }, 100);
     });
   }
-
-  $fetch("/api/streaming")
-    .then((data) => {
-      videoTitle.value = data?.body.video.title;
-      videoDesc.value = data?.body.video.description;
-      videoCoverURL.value = data?.body.video.cover;
-      videoURL.value = data?.body.video.source;
-      setupMQTT(
-        data.body.mqtt.host,
-        data.body.mqtt.port,
-        data.body.mqtt.path,
-        data.body.mqtt.topic
-      );
-    })
-    .finally(() => (isLoading.value = false));
+  setupMQTT(
+    streamingData?.value.body.mqtt.host,
+    streamingData?.value.body.mqtt.port,
+    streamingData?.value.body.mqtt.path,
+    streamingData?.value.body.mqtt.topic
+  );
 });
 </script>
 <template>
@@ -87,12 +81,14 @@ onMounted(() => {
           class="aspect-video max-h-fit"
           rounded="xl"
         >
-          <Player
-            v-if="!isLoading"
-            :src="videoURL"
-            videotype="application/x-mpegURL"
-            :cover="videoCoverURL"
-          ></Player>
+          <v-no-ssr>
+            <Player
+              v-if="!isLoading"
+              :cover="streamingData?.body.video.cover"
+              :video_src="streamingData?.body.video.source + streamingData?.body.video.stream_id + '.m3u8'"
+              nuxt-client
+            ></Player>
+          </v-no-ssr>
         </v-card>
         <section class="mt-2">
           <p class="text-xl font-bold px-2">
