@@ -1,8 +1,8 @@
 <script setup>
 import colors from "vuetify/util/colors";
 
-const isRail = useIsRail()
-isRail.value = false
+const isRail = useIsRail();
+isRail.value = false;
 
 const router = useRouter();
 
@@ -10,10 +10,12 @@ const isLoading = ref(false);
 
 const title = ref("");
 const desc = ref("");
-const source = ref("https://");
+const source = ref("");
 const coverFile = ref(null);
 const fixedCoverURL = ref("/docks.jpg");
 const coverURL = ref(fixedCoverURL.value);
+const streamID = ref("");
+const streamKey = ref("");
 
 const chatHost = ref("");
 const chatPort = ref("");
@@ -43,6 +45,8 @@ const onSaveStreamingSetting = function () {
         cover: coverURL.value,
         description: desc.value,
         source: source.value,
+        stream_key: streamKey.value,
+        stream_id: streamID.value
       },
     },
   })
@@ -78,19 +82,34 @@ const onSaveChatSetting = function () {
     });
 };
 
-onMounted(() => {
-  $fetch("/api/streaming").then((data) => {
-    title.value = data.body.video.title;
-    desc.value = data.body.video.description;
-    coverURL.value = data.body.video.cover;
+const generateKey = (
+  length = 20,
+  characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+) =>
+  Array.from(crypto.getRandomValues(new Uint32Array(length)))
+    .map((x) => characters[x % characters.length])
+    .join("");
 
-    chatHost.value = data.body.mqtt.host;
-    chatPort.value = data.body.mqtt.port;
-    chatTopic.value = data.body.mqtt.topic;
-    chatQos.value = data.body.mqtt.qos;
-    chatPath.value = data.body.mqtt.path;
-  });
-});
+const { data: streamData } = await useFetch("/api/streaming");
+
+const streamLink = computed(() => `rtmp://${location.host.split(':')[0]}/ingest?key=${streamKey.value}`)
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text)
+}
+
+title.value = streamData.value?.body.video.title;
+desc.value = streamData.value?.body.video.description;
+coverURL.value = streamData.value?.body.video.cover;
+source.value = streamData.value?.body.video.source;
+streamID.value = streamData.value?.body.video.stream_id;
+streamKey.value = streamData.value?.body.video.stream_key;
+
+chatHost.value = streamData.value?.body.mqtt.host;
+chatPort.value = streamData.value?.body.mqtt.port;
+chatTopic.value = streamData.value?.body.mqtt.topic;
+chatQos.value = streamData.value?.body.mqtt.qos;
+chatPath.value = streamData.value?.body.mqtt.path;
 </script>
 <template>
   <section class="p-[2rem]">
@@ -101,34 +120,121 @@ onMounted(() => {
             <v-card rounded="xl" class="aspect-video" :image="coverURL">
             </v-card>
             <v-card-title>
-              <v-text-field
-                color="primary"
-                rounded="lg"
-                label="Source"
-                variant="outlined"
-                density="compact"
-                v-model="source"
-                class="mt-4"
-              ></v-text-field>
               <v-file-input
                 v-model="coverFile"
+                class="mt-4"
                 color="primary"
                 show-size
                 chips
                 density="compact"
                 rounded="lg"
-                label="Cover"
+                label="Thumbnails"
                 variant="outlined"
                 @click:clear="onChangeCoverFile"
                 @change="onChangeCoverFile"
               ></v-file-input>
+              <v-text-field
+                color="primary"
+                rounded="lg"
+                label="Source"
+                prepend-icon="mdi-link"
+                variant="outlined"
+                density="compact"
+                v-model="source"
+              ></v-text-field>
+              <div class="flex flex-row gap-x-2">
+                <v-text-field
+                color="primary"
+                rounded="lg"
+                label="Stream Key"
+                prepend-icon="mdi-identifier"
+                variant="plain"
+                v-model="streamID"
+                readonly
+                density="compact"
+                ></v-text-field>
+                <v-tooltip text="Copy to Clipboard">
+                  <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  variant="plain"
+                  density="compact"
+                  class="mt-1"
+                  @click="copyToClipboard(streamID)"
+                  icon="mdi-content-copy"
+                ></v-btn>
+              </template>
+                </v-tooltip>
+                <v-tooltip text="Renew ID">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      v-bind="props"
+                      variant="plain"
+                      density="compact"
+                      class="mt-1"
+                      @click="() => (streamID = generateKey(length=8))"
+                      icon="mdi-refresh"
+                    ></v-btn>
+                  </template>
+                </v-tooltip>
+              </div>
+              <div class="flex flex-row gap-x-2">
+                <v-text-field
+                  color="primary"
+                  rounded="lg"
+                  label="Stream Session Key"
+                  prepend-icon="mdi-key"
+                  variant="plain"
+                  v-model="streamKey"
+                  readonly
+                  density="compact"
+                ></v-text-field>
+                <v-tooltip text="Renew Key">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      v-bind="props"
+                      variant="plain"
+                      density="compact"
+                      class="mt-1"
+                      @click="() => (streamKey = generateKey())"
+                      icon="mdi-refresh"
+                    ></v-btn>
+                  </template>
+                </v-tooltip>
+              </div>
+              <div class="flex flex-row gap-x-2">
+
+              <v-text-field
+                  color="primary"
+                  rounded="lg"
+                  label="Ingest Server"
+                  prepend-icon="mdi-upload-network"
+                  variant="plain"
+                  v-model="streamLink"
+                  readonly
+                  density="compact"
+                ></v-text-field>
+                <v-tooltip text="Copy to Clipboard">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      v-bind="props"
+                      variant="plain"
+                      density="compact"
+                      class="mt-1"
+                      @click="copyToClipboard(streamLink)"
+                      icon="mdi-content-copy"
+                    ></v-btn>
+                  </template>
+                </v-tooltip>
+              </div>
+
             </v-card-title>
           </v-card-text>
         </v-card>
       </span>
       <span class="md:w-8/12">
         <div>
-          <v-card flat title="Streaming setting">
+          <v-card flat title="Streaming settings">
             <template v-slot:append>
               <v-btn
                 color="primary"
@@ -160,7 +266,7 @@ onMounted(() => {
       </span>
     </div>
     <div>
-      <v-card flat title="Chat setting">
+      <v-card flat title="Chat settings">
         <template v-slot:append>
           <v-btn
             color="primary"

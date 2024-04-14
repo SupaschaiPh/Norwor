@@ -1,4 +1,6 @@
 
+import { tables, useDrizzle } from "../../utils/drizzle";
+
 function getUrlParams(url: string): { [key: string]: string } {
     const queryString = url.split('?')[1];
     const params: { [key: string]: string } = {};
@@ -34,10 +36,13 @@ export default defineEventHandler(async (event) => {
     const urlParams = getUrlParams(body.tcurl)
     console.log(body, app_name, urlParams)
 
-    if (app_name === "ingest" && "key" in urlParams) {
+    let video = await useDrizzle().select().from(tables.videos).limit(1);
+
+    if (app_name === "ingest" && "key" in urlParams && stream_id === video[0].stream_id && urlParams.key === video[0].stream_key) {
         console.log(urlParams.key)
         return { status: 200, message: "" }
     }
+    console.log(app_name === "ingest", "key" in urlParams, stream_id, video[0].stream_id, urlParams.key === video[0].stream_key)
 
     throw createError({
         status: 400,

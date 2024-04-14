@@ -9,10 +9,8 @@ const channelName = ref("Admin");
 const channelSubtitle = ref("Admin@admin.com");
 const videoTitle = ref("");
 const videoDesc = ref("");
-const videoCoverURL = ref("");
 const message = ref("");
 const chats = ref([]);
-const isLoading = ref(true);
 const isMinimizeChat = ref(false);
 
 let publisMqtt = (mss) => {};
@@ -22,6 +20,13 @@ const onSendmessageHandler = function () {
   publisMqtt(message.value);
   message.value = "";
 };
+
+const { data: streamingData, pending: isLoading } = await useFetch(
+  "/api/streaming"
+);
+
+videoTitle.value = streamingData?.value.body.video.title;
+videoDesc.value = streamingData?.value.body.video.description;
 
 onMounted(() => {
   function setupMQTT(
@@ -59,20 +64,12 @@ onMounted(() => {
       }, 100);
     });
   }
-
-  $fetch("/api/streaming")
-    .then((data) => {
-      videoTitle.value = data?.body.video.title;
-      videoDesc.value = data?.body.video.description;
-      videoCoverURL.value = data.body.video.cover;
-      setupMQTT(
-        data.body.mqtt.host,
-        data.body.mqtt.port,
-        data.body.mqtt.path,
-        data.body.mqtt.topic
-      );
-    })
-    .finally(() => (isLoading.value = false));
+  setupMQTT(
+    streamingData?.value.body.mqtt.host,
+    streamingData?.value.body.mqtt.port,
+    streamingData?.value.body.mqtt.path,
+    streamingData?.value.body.mqtt.topic
+  );
 });
 </script>
 <template>
@@ -85,7 +82,12 @@ onMounted(() => {
           rounded="xl"
         >
           <v-no-ssr>
-            <Player v-if="!isLoading" :cover="videoCoverURL"></Player>
+            <Player
+              v-if="!isLoading"
+              :cover="streamingData?.body.video.cover"
+              :video_src="streamingData?.body.video.source + streamingData?.body.video.stream_id + '.m3u8'"
+              nuxt-client
+            ></Player>
           </v-no-ssr>
         </v-card>
         <section class="mt-2">
@@ -109,7 +111,15 @@ onMounted(() => {
               </v-avatar>
             </template>
             <template v-slot:append>
-              <v-btn v-show="isMinimizeChat"  @click="()=>isMinimizeChat = false" variant="tonal" color="primary" class="text-none" append-icon="mdi-window-maximize" rounded="lg">
+              <v-btn
+                v-show="isMinimizeChat"
+                @click="() => (isMinimizeChat = false)"
+                variant="tonal"
+                color="primary"
+                class="text-none"
+                append-icon="mdi-window-maximize"
+                rounded="lg"
+              >
                 Chitchat
               </v-btn>
             </template>
@@ -119,10 +129,28 @@ onMounted(() => {
           </div>
         </section>
       </div>
-      <div v-show="!isMinimizeChat"  :class="'lg:px-3 ' + (isMinimizeChat ? 'fixed bottom-0 right-0 backdrop:opacity-25' : 'lg:w-4/12')">
-        <v-card class="h-auto relative" title="ChitChat" :rounded="isMinimizeChat ? 'lg' : 'xl'">
+      <div
+        v-show="!isMinimizeChat"
+        :class="
+          'lg:px-3 ' +
+          (isMinimizeChat
+            ? 'fixed bottom-0 right-0 backdrop:opacity-25'
+            : 'lg:w-4/12')
+        "
+      >
+        <v-card
+          class="h-auto relative"
+          title="ChitChat"
+          :rounded="isMinimizeChat ? 'lg' : 'xl'"
+        >
           <template v-slot:append>
-            <v-btn variant="tonal" @click="()=>isMinimizeChat = !isMinimizeChat" color="primary" density="compact" :icon="isMinimizeChat ?  'mdi-window-maximize' : 'mdi-minus'"></v-btn>
+            <v-btn
+              variant="tonal"
+              @click="() => (isMinimizeChat = !isMinimizeChat)"
+              color="primary"
+              density="compact"
+              :icon="isMinimizeChat ? 'mdi-window-maximize' : 'mdi-minus'"
+            ></v-btn>
           </template>
           <hr />
           <v-card-text
