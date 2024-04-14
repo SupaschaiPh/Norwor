@@ -9,16 +9,27 @@ export default defineEventHandler(async (event) => {
   });
 
   if (event.method == "GET") {
+    const params = getQuery(event)
     let mqtt = await useDrizzle().select().from(tables.mqtt).limit(1);
-    let video = await useDrizzle().select().from(tables.videos).limit(1);
-    return {
-      status: statusCode,
-      mss,
-      body: {
-        mqtt: mqtt[0],
-        video: video[0],
-      },
-    };
+    if (!params.mqtt) {
+      let video = await useDrizzle().select().from(tables.videos).limit(1);
+      return {
+        status: statusCode,
+        mss,
+        body: {
+          mqtt: mqtt[0],
+          video: video[0],
+        }
+      }
+    } else {
+      return {
+        status: statusCode,
+        mss,
+        body: {
+          mqtt: mqtt[0],
+        },
+      };
+    }
   } else if (event.method == "PATCH") {
     const body = await readBody(event);
     if (body) {

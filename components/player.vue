@@ -2,9 +2,6 @@
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
 import Hls from "hls.js";
-import Plyr from "plyr";
-import "plyr/dist/plyr.css";
-import Hls from "hls.js";
 
 const props = defineProps({
   cover: {

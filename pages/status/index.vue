@@ -3,8 +3,6 @@ import colors from "vuetify/util/colors";
 import mqtt from "mqtt";
 const isRail = useIsRail();
 isRail.value = false;
-const isRail = useIsRail();
-isRail.value = false;
 
 const status = ref([
   {
@@ -23,44 +21,52 @@ const status = ref([
     status: "ok",
   },
 ]);
-const { data: webHealth } = await useFetch("/api/health");
-const { data: nginxHealth } = await useFetch("http://192.168.100.105/health");
-const { data: mqttHealth } = await useFetch("/api/streaming");
+const { data: webHealth, refresh: webHealthRefresh } = await useFetch("/api/health");
+const { data: nginxHealth, refresh: nginxHealthRefresh } = await useFetch("http://192.168.100.105/health");
+const { data: mqttHealth } = await useFetch("/api/streaming", { query: { mqtt: true}});
 
 status.value[0].status_code = webHealth.value.status;
 status.value[1].status_code = nginxHealth.value.status;
 
-const pollingFetch = ref(null);
-
 function setupMQTT(
-    host = "mqtt://localhost",
-    port = 8083,
-    path = "/mqtt",
-    topic = "DUCKBEECAUSE-XYZ$ALWAYSMISSU"
-  ) {
-    const client = mqtt.connect(host, {
-      clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
-      port,
-      path,
-      reconnectPeriod: 0,
+  host = "mqtt://localhost",
+  port = 8083,
+  path = "/mqtt",
+  topic = "DUCKBEECAUSE-XYZ$ALWAYSMISSU"
+) {
+  const client = mqtt.connect(host, {
+    clientId: "clientId-KMIT" + Math.floor(Math.random() * 100),
+    port,
+    path,
+    reconnectPeriod: 0,
+  });
+  client.on("connect", () => {
+    client.subscribe(topic, (err) => {
+      if (!err) {
+        status.value[2].status_code = 200;
+        console.log("subscribed");
+      } else {
+        status.value[2].status_code = 404;
+      }
     });
-    client.on("connect", () => {
-      client.subscribe(topic, (err) => {
-        if (!err) {
-          status.value[2].status_code = 200;
-          console.log("subscribed");
-        } else {
-          status.value[2].status_code = 404;
-        }
-      });
-    });
-  }
-  setupMQTT(
-    mqttHealth.value.body.mqtt.host,
-    mqttHealth.value.body.mqtt.port,
-    mqttHealth.value.body.mqtt.path,
-    mqttHealth.value.body.mqtt.topic
-  );
+  });
+}
+setupMQTT(
+  mqttHealth.value.body.mqtt.host,
+  mqttHealth.value.body.mqtt.port,
+  mqttHealth.value.body.mqtt.path,
+  mqttHealth.value.body.mqtt.topic
+);
+
+const previousSetIntervalInstance = setInterval(myTimer, 1000);
+
+function myTimer() {
+  webHealthRefresh()
+  nginxHealthRefresh()
+}
+
+onBeforeUnmount(() => {
+  clearInterval(previousSetIntervalInstance);
 });
 </script>
 

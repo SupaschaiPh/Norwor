@@ -3,8 +3,6 @@ import colors from "vuetify/util/colors";
 
 const isRail = useIsRail();
 isRail.value = false;
-const isRail = useIsRail();
-isRail.value = false;
 
 const router = useRouter();
 
@@ -143,15 +141,6 @@ chatPath.value = streamData.value?.body.mqtt.path;
                 @click:clear="onChangeCoverFile"
                 @change="onChangeCoverFile"
               ></v-file-input>
-              <v-text-field
-                color="primary"
-                rounded="lg"
-                label="Source"
-                prepend-icon="mdi-link"
-                variant="outlined"
-                density="compact"
-                v-model="source"
-              ></v-text-field>
               <div class="flex flex-row gap-x-2">
                 <v-text-field
                 color="primary"
