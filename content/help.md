@@ -7,11 +7,11 @@ description: 'meta description of the page'
 <details open>
     <summary>ปัญหาการรับชม</summary>
     <br>
-        &nbsp;&nbsp;&nbsp;<details>
+        <details>
             <summary>วิธีแก้ปัญหาเบื้องต้นในการรับชม เช่น ภาพไม่คมชัด หรือกระตุก</summary>
             เช็คสัญญาณอินเทอร์เน็ตของคุณ
         </details>
-        &nbsp;&nbsp;&nbsp;<details>
+        <details>
             <summary>วิธีแก้ปัญหาเบื้องต้นกรณีอุปกรณ์ถูกระงับ/ใช้งานบนอุปกรณ์อื่น</summary>
             ตามเงื่อนไขการสมัคร ผู้ใช้งานสามารถรับชมได้ครั้งละ 1 อุปกรณ์เท่านั้น หากอุปกรณ์ถูกระงับ กรุณารอ 15 นาที ระบบจะปลดล็อกอัตโนมัติ หากหลังจาก 15 นาทีแล้ว ยังไม่สามารถใช้งานได้ กรุณารีสตาร์ทอุปกรณ์ที่ใช้งานใหม่อีกครั้ง
         </details>
@@ -19,12 +19,12 @@ description: 'meta description of the page'
 <details open>
     <summary>วิธีการจัดการบัญชีผู้ใช้งาน</summary>
     <br>
-        &nbsp;&nbsp;&nbsp;<details>
+        <details>
             <summary>วิธีออกจากระบบ</summary>
             1. เลือกเมนูโปรไฟล์ (มุมบนขวามือ) <br>
             2. เลือกเมนู ออกจากระบบ
         </details>
-        &nbsp;&nbsp;&nbsp;<details>
+        <details>
             <summary>วิธีการแจ้งปัญหาในการใช้งาน หรือการลบบัญชี</summary>
             กรณีมีปัญหาในการใช้งาน หรือต้องการลบบัญชีกรุณาติดต่อ Help Center <br>
             (E-mail: 65070242@kmitl.ac.th โทร.: 012-345-6789)
