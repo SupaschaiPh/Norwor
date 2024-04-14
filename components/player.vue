@@ -2,6 +2,9 @@
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
 import Hls from "hls.js";
+import Plyr from "plyr";
+import "plyr/dist/plyr.css";
+import Hls from "hls.js";
 
 const props = defineProps({
   cover: {
@@ -57,9 +60,12 @@ onMounted(() => {
     // default options with no quality update in case Hls is not supported
     const player = new Plyr(video, defaultOptions);
   }
+
   setTimeout(() => {
-    document.getElementsByClassName("plyr")[0].classList.add("h-full");
-    document.getElementsByClassName("plyr")[0].classList.add("w-full");
+    if (document.getElementsByClassName("plyr")[0]) {
+      document.getElementsByClassName("plyr")[0].classList.add("h-full");
+      document.getElementsByClassName("plyr")[0].classList.add("w-full");
+    }
   }, 100);
 
   function updateQuality(newQuality) {

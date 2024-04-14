@@ -3,6 +3,8 @@ import colors from "vuetify/util/colors";
 
 const isRail = useIsRail();
 isRail.value = false;
+const isRail = useIsRail();
+isRail.value = false;
 
 const router = useRouter();
 
@@ -117,7 +119,15 @@ chatPath.value = streamData.value?.body.mqtt.path;
       <span class="md:w-4/12">
         <v-card flat :color="colors.grey.lighten5" class="h-full" rounded="xl">
           <v-card-text>
-            <v-card rounded="xl" class="aspect-video" :image="coverURL">
+            <v-card rounded="xl" class="aspect-video">
+              <div
+                :class="
+                  'flex justify-center h-full ' +
+                  (coverURL ? 'bg-black' : 'bg-primary-100')
+                "
+              >
+                <NuxtImg class="h-full" :src="coverURL"></NuxtImg>
+              </div>
             </v-card>
             <v-card-title>
               <v-file-input
@@ -254,12 +264,19 @@ chatPath.value = streamData.value?.body.mqtt.path;
             variant="outlined"
             v-model="title"
           ></v-text-field>
+          <v-text-field
+            color="primary"
+            rounded="lg"
+            label="Source"
+            variant="outlined"
+            v-model="source"
+          ></v-text-field>
           <v-textarea
             rounded="lg"
             color="primary"
             label="Description"
             variant="outlined"
-            rows="15"
+            rows="12"
             v-model="desc"
           ></v-textarea>
         </v-card-text>

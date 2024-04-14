@@ -3,6 +3,8 @@ import colors from "vuetify/util/colors";
 import mqtt from "mqtt";
 const isRail = useIsRail();
 isRail.value = false;
+const isRail = useIsRail();
+isRail.value = false;
 
 const status = ref([
   {
@@ -28,8 +30,9 @@ const { data: mqttHealth } = await useFetch("/api/streaming");
 status.value[0].status_code = webHealth.value.status;
 status.value[1].status_code = nginxHealth.value.status;
 
-onMounted(() => {
-  function setupMQTT(
+const pollingFetch = ref(null);
+
+function setupMQTT(
     host = "mqtt://localhost",
     port = 8083,
     path = "/mqtt",
