@@ -79,8 +79,8 @@ useSeoMeta({
       <v-card elevation="1" rounded="xl">
         <div class="p-4" v-if="step == 0">
           <div class="flex items-center pl-4">
-            <img src="/public/favicon.ico" width="40px" @click="()=>{ router.push('/') }" style="cursor: pointer;">
-            <v-card-title style="flex: 1; cursor: pointer;" @click="()=>{ router.push('/') }">SuperStream</v-card-title>
+            <img src="/public/favicon.ico" width="40px" @click="()=>{ router.push('/') }" class="cursor-pointer">
+            <v-card-title class="flex cursor-pointer"@click="()=>{ router.push('/') }">SuperStream</v-card-title>
           </div>
           <v-card-title>
             <p class="font-bold">Sign in</p>
@@ -106,8 +106,8 @@ useSeoMeta({
 
         <div class="p-4" v-if="step == 1">
           <div class="flex items-center pl-4">
-            <img src="/public/favicon.ico" width="40px" @click="()=>{ router.push('/') }" style="cursor: pointer;">
-            <v-card-title style="flex: 1; cursor: pointer;" @click="()=>{ router.push('/') }">SuperStream</v-card-title>
+            <img src="/public/favicon.ico" width="40px" @click="()=>{ router.push('/') }" class="cursor-pointer">
+            <v-card-title class="flex cursor-pointer" @click="()=>{ router.push('/') }">SuperStream</v-card-title>
           </div>
           <v-card-title>
             <p class="font-bold">Sign in</p>
