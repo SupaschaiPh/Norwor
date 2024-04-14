@@ -100,12 +100,18 @@ onMounted(() => {
         <v-card flat :color="colors.grey.lighten5" class="h-full" rounded="xl">
           <v-card-text>
             <v-card rounded="xl" class="aspect-video">
-              <div :class="'flex justify-center h-full ' + (coverURL ? 'bg-black' : 'bg-primary-100')">
+              <div
+                :class="
+                  'flex justify-center h-full ' +
+                  (coverURL ? 'bg-black' : 'bg-primary-100')
+                "
+              >
                 <NuxtImg class="h-full" :src="coverURL"></NuxtImg>
               </div>
             </v-card>
             <v-card-title>
               <v-file-input
+                class="mt-4"
                 v-model="coverFile"
                 color="primary"
                 show-size
@@ -149,7 +155,6 @@ onMounted(() => {
             label="Source"
             variant="outlined"
             v-model="source"
-            class="mt-4"
           ></v-text-field>
           <v-textarea
             rounded="lg"
