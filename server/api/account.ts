@@ -2,7 +2,7 @@ import Database from "better-sqlite3";
 import { tables, useDrizzle } from "../utils/drizzle";
 
 export default defineEventHandler(async (event) => {
-  const config = await useRuntimeConfig();
+  const config = useRuntimeConfig();
   let mss = "";
   let statusCode = 200;
   let users: Database.RunResult | Object | null = null;
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
       body: users,
     };
   } else {
-    users = (await useDrizzle().select().from(tables.users).all()).map((v) => {
+    users = (useDrizzle().select().from(tables.users).all()).map((v) => {
       v.password = "";
       return v;
     });

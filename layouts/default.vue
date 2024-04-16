@@ -1,5 +1,4 @@
 <script setup>
-import colors from "vuetify/util/colors";
 const router = useRouter();
 
 const railModeSidebar = useIsRail();
@@ -77,7 +76,7 @@ useSeoMeta({
         width="30px"
         @click="
           () => {
-            router.push('/');
+            navigateTo('/');
           }
         "
         style="cursor: pointer"
@@ -86,7 +85,7 @@ useSeoMeta({
         class="font-bold cursor-pointer"
         @click="
           () => {
-            router.push('/');
+            navigateTo('/');
           }
         "
         style="flex: 1"
@@ -160,7 +159,7 @@ useSeoMeta({
           density="comfortable"
           @click="
             () => {
-              router.push('/signin');
+              navigateTo('/signin');
             }
           "
           icon="mdi-login"
@@ -180,7 +179,7 @@ useSeoMeta({
       <v-list-item
         @click="
           () => {
-            router.push('/');
+            navigateTo('/');
           }
         "
         prepend-icon="mdi-home"
@@ -192,7 +191,7 @@ useSeoMeta({
       <v-list-item
         @click="
           () => {
-            router.push('/status');
+            navigateTo('/status');
           }
         "
         prepend-icon="mdi-server-network"
@@ -212,7 +211,7 @@ useSeoMeta({
         title="Docs"
         @click="
           () => {
-            router.push('/docs');
+            navigateTo('/docs/help');
           }
         "
       ></v-list-item>
@@ -221,10 +220,10 @@ useSeoMeta({
         prepend-icon="mdi-access-point"
         rounded="lg"
         link
-        title="Stream Setting"
+        title="Stream Settings"
         @click="
           () => {
-            router.push('/admin/setting');
+            navigateTo('/admin/setting');
           }
         "
       ></v-list-item>
@@ -236,7 +235,7 @@ useSeoMeta({
         title="Manage Account"
         @click="
           () => {
-            router.push('/admin/account');
+            navigateTo('/admin/account');
           }
         "
       ></v-list-item>
