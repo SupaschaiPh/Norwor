@@ -34,15 +34,12 @@ export default defineEventHandler(async (event) => {
     const app_name = body.app
     const stream_id = body.name
     const urlParams = getUrlParams(body.tcurl)
-    console.log(body, app_name, urlParams)
 
     let video = await useDrizzle().select().from(tables.videos).limit(1);
 
     if (app_name === "ingest" && "key" in urlParams && stream_id === video[0].stream_id && urlParams.key === video[0].stream_key) {
-        console.log(urlParams.key)
         return { status: 200, message: "" }
     }
-    console.log(app_name === "ingest", "key" in urlParams, stream_id, video[0].stream_id, urlParams.key === video[0].stream_key)
 
     throw createError({
         status: 400,

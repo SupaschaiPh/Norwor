@@ -31,7 +31,7 @@ const checkUsernameHandler = function () {
       if (res.status == 200) {
         gotoPasswordStep();
       } else {
-        usernameError.value = "incorrect username";
+        usernameError.value = "Incorrect username";
       }
     })
     .catch((err) => {
@@ -87,10 +87,10 @@ useSeoMeta({
           <v-card-title>
             <p class="font-bold">Sign in</p>
           </v-card-title>
-          <v-card-subtitle>to countinue to platform</v-card-subtitle>
+          <v-card-subtitle>To get access to all feature</v-card-subtitle>
           <v-card-item class="my-6">
             <div>
-              <v-text-field class="mt-2" label="username" variant="outlined" type="text" color="primary" rounded="lg"
+              <v-text-field class="mt-2" label="Username" variant="outlined" type="text" color="primary" rounded="lg"
                 v-model="username" :error-messages="usernameError"></v-text-field>
             </div>
           </v-card-item>
@@ -114,10 +114,10 @@ useSeoMeta({
           <v-card-title>
             <p class="font-bold">Sign in</p>
           </v-card-title>
-          <v-card-subtitle>to countinue to platform</v-card-subtitle>
+          <v-card-subtitle>To get access to all feature</v-card-subtitle>
           <v-card-item class="my-6">
             <div>
-              <v-text-field class="mt-2" label="password" variant="outlined" type="password" color="primary"
+              <v-text-field class="mt-2" label="Password" variant="outlined" type="password" color="primary"
                 rounded="lg" v-model="password" :error-messages="passwordError"></v-text-field>
             </div>
           </v-card-item>

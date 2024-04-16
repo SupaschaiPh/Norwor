@@ -14,15 +14,17 @@ const props = defineProps({
   },
 });
 
-
 onMounted(() => {
   const video = document.querySelector("video");
   const source = props.video_src;
 
   // For more options see: https://github.com/sampotts/plyr/#options
-  const defaultOptions = {};
+  const defaultOptions = ref({});
 
-  if (Hls.isSupported()) {
+  if (!Hls.isSupported()) {
+    video.src = source;
+    var player = new Plyr(video, defaultOptions.value);
+  } else {
     // For more Hls.js options, see https://github.com/dailymotion/hls.js
     const hls = new Hls();
     hls.loadSource(source);
@@ -33,29 +35,51 @@ onMounted(() => {
     hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
       // Transform available levels into an array of integers (height values).
       const availableQualities = hls.levels.map((l) => l.height);
+      availableQualities.unshift(0); //prepend 0 to quality array
 
       // Add new qualities to option
-      defaultOptions.quality = {
-        default: availableQualities[0],
+      defaultOptions.value.quality = {
+        default: 0, //Default - AUTO
         options: availableQualities,
-        // this ensures Plyr to use Hls to update quality level
-        // Ref: https://github.com/sampotts/plyr/blob/master/src/js/html5.js#L77
         forced: true,
         onChange: (e) => updateQuality(e),
       };
+      // Add Auto Label
+      defaultOptions.value.i18n = {
+        qualityLabel: {
+          0: "Auto",
+        },
+      };
 
+      hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+        var span = document.querySelector(
+          ".plyr__menu__container [data-plyr='quality'][value='0'] span"
+        );
+        if (hls.autoLevelEnabled) {
+          span.innerHTML = `Auto (${hls.levels[data.level].height}p)`;
+        } else {
+          span.innerHTML = `Auto`;
+        }
+      });
       // Initialize new Plyr player with quality options
-      const player = new Plyr(video, defaultOptions);
+      var player = new Plyr(video, defaultOptions.value);
     });
+
     hls.attachMedia(video);
     window.hls = hls;
-    onUnmounted(() => {
-      hls.destroy();
-      console.info("HLS.js unloaded");
-    });
-  } else {
-    // default options with no quality update in case Hls is not supported
-    const player = new Plyr(video, defaultOptions);
+  }
+
+  function updateQuality(newQuality) {
+    if (newQuality === 0) {
+      window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+    } else {
+      window.hls.levels.forEach((level, levelIndex) => {
+        if (level.height === newQuality) {
+          console.log("Found quality match with " + newQuality);
+          window.hls.currentLevel = levelIndex;
+        }
+      });
+    }
   }
 
   setTimeout(() => {
@@ -81,7 +105,7 @@ onMounted(() => {
       class="w-full h-full"
       controls
       crossorigin
-      style="--plyr-color-main: #fc6736; width: 100%; height: 100%"
+      style="--plyr-color-main: #fc6736; width: 100%; height: 100%;"
       :poster="cover"
     >
       '
@@ -91,8 +115,12 @@ onMounted(() => {
 </template>
 <style>
 video,
-.plyr {
+:deep(.plyr) {
   height: 100%;
   width: 100%;
+}
+:deep(.plyr__progress){
+  pointer-events: none !important;
+  display: none !important;
 }
 </style>
