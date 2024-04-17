@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   console.log(session.data);
   if (session.data.acc.username === "admin") {
     if ("stream_id" in params && "app" in params && "ban" in params) {
-      $fetch(`http://${config.DOCKER_INGEST_URI}/control/drop/publisher`, {
+      $fetch(`${config.DOCKER_INGEST_URI}/control/drop/publisher`, {
         query: {
           app: params.app,
           name: params.stream_id,
