@@ -77,7 +77,7 @@ const dropStream = (app_name, streamId, ban) => {
 
 const stats = ref(null);
 const fetchStreamingStats = () => {
-  $fetch("http://localhost/raw_stat").then((res) => {
+  $fetch("/raw_stat").then((res) => {
     stats.value = res["http-flv"];
   });
 };
