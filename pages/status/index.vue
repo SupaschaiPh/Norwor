@@ -26,7 +26,7 @@ const { data: webHealth, refresh: webHealthRefresh } = await useFetch(
   "/api/health"
 );
 const { data: nginxHealth, refresh: nginxHealthRefresh } = await useFetch(
-  "http://192.168.100.105/health"
+  "/health"
 );
 const { data: mqttHealth } = await useFetch("/api/streaming", {
   query: { mqtt: true },
