@@ -1,4 +1,4 @@
-version: '0.0.0'
+version: '1.0.0'
 services:
   MQTT_broker:
     image: emqx/nanomq:0.21
@@ -6,3 +6,39 @@ services:
       - 1883:1883 
       - 8083:8083 
       - 8883:8883
+    networks:
+        main:
+            aliases:
+                - nanomq
+  web-frontend:
+    build: ./
+    restart: always
+    environment:
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - DOCKER_INGEST_URI=http://nginx
+      - INGEST_SERVER=49.228.131.109:3359
+    networks:
+        main:
+            aliases:
+                - web
+  nginx-http-flv:
+    build: ./nginx
+    restart: always
+    ports:
+      - '80:80/tcp'
+      - '443:443/tcp'
+      - '1935:1935/tcp'
+    environment:
+      - TZ=Asia/Bangkok
+    volumes:
+      - ./nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
+      - ./nginx/logs:/usr/local/nginx/logs
+    networks:
+        main:
+            aliases:
+                - nginx
+    depends_on:
+        - web-frontend
+networks:
+    main:
