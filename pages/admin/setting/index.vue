@@ -129,7 +129,7 @@ chatPath.value = streamData.value?.body.mqtt.path;
                   (coverURL ? 'bg-black' : 'bg-primary-100')
                 "
               >
-                <NuxtImg class="h-full" :src="coverURL"></NuxtImg>
+                <img class="h-full" :src="coverURL"></img>
               </div>
             </v-card>
             <v-card-title>
@@ -264,7 +264,7 @@ chatPath.value = streamData.value?.body.mqtt.path;
             variant="outlined"
             v-model="source"
             ></v-text-field>
-            <v-btn color="blue-darken-2" variant="plain" class="mt-2" @click="() => {
+            <v-btn color="primary" variant="plain" class="mt-2" @click="() => {
               source = '/stream/hls/'
             }">
               Default
