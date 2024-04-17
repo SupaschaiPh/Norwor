@@ -48,6 +48,11 @@ export default defineEventHandler(async (event) => {
           status: 500,
           mss: "Stream dropped failure",
         };
+      }).catch(err => {
+        return {
+          status: 500,
+          mss: "Stream dropped failure",
+        };
       });
     } else {
       throw createError({ status: 400, message: "Invalid Payload" });
