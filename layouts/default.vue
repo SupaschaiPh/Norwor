@@ -195,11 +195,11 @@ useSeoMeta({
       <div v-if="railModeSidebar" class="mt-2"></div>
 
       <v-list-item
-        v-if="!railModeSidebar && acc.username === 'admin'"
+        v-if="!railModeSidebar && acc?.username === 'admin'"
         title="Admin"
       ></v-list-item>
       <v-divider
-        v-if="!railModeSidebar && acc.username === 'admin'"
+        v-if="!railModeSidebar && acc?.username === 'admin'"
       ></v-divider>
 
       <v-list-item
@@ -215,7 +215,7 @@ useSeoMeta({
       ></v-list-item>
 
       <v-list-item
-        v-if="acc.username === 'admin'"
+        v-if="acc?.username === 'admin'"
         prepend-icon="mdi-access-point"
         rounded="lg"
         link
@@ -228,7 +228,7 @@ useSeoMeta({
       ></v-list-item>
 
       <v-list-item
-        v-if="acc.username === 'admin'"
+        v-if="acc?.username === 'admin'"
         prepend-icon="mdi-account-group"
         rounded="lg"
         link
