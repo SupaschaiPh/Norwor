@@ -14,6 +14,9 @@
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## เอกสาร
+https://kmitlthailand-my.sharepoint.com/:w:/g/personal/65070030_kmitl_ac_th/EfTg4X5EXXlNtRfCcm-Ib5wBXkwDzYVD498jji7_FwoH_Q?e=PaHNAM
+
 ## Setup
 
 Make sure to install the dependencies:
