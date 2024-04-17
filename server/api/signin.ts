@@ -1,4 +1,3 @@
-import useAcc from "~/composables/useAcc";
 import { tables, useDrizzle } from "../utils/drizzle";
 
 export default defineEventHandler(async (event) => {
@@ -48,10 +47,10 @@ export default defineEventHandler(async (event) => {
           password: config.ADMIN_PASSWORD,
           displayName: config.ADMIN_USERNAME,
         });
-        mss = "found user";
+        mss = "Login Success";
         statusCode = 200;
       } else {
-        mss = "not found user";
+        mss = "User not found";
         statusCode = 404;
       }
     }

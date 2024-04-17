@@ -17,7 +17,7 @@ const isLoading = ref(false);
 const onKickSomeone = function (id) {
   isLoading.value = true;
   if (acc?.value?.id == id) {
-    console.info("wtf what are you doing?");
+    console.info("wtf are you doing?");
   }
   $fetch("/api/account", {
     method: "delete",

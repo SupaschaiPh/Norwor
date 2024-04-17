@@ -1,8 +1,8 @@
 <script setup>
 const route = useRoute();
-definePageMeta({
-  middleware: "custom-layout",
-});
+// definePageMeta({
+//   middleware: "custom-layout",
+// });
 </script>
 <template>
   <main class="h-screen w-screen p-[2rem] bg-primary-50 overflow-auto">

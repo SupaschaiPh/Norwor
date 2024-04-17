@@ -1,13 +1,13 @@
 <script setup>
 import colors from "vuetify/util/colors";
 definePageMeta({
-    middleware: ['admin-route'],
-    meta: { permitted: ['admin'] },
-})
+  middleware: ["admin-route"],
+  meta: { permitted: ["admin"] },
+});
 const isRail = useIsRail();
 isRail.value = false;
 
-const router = useRouter();
+const config = useRuntimeConfig();
 
 const isLoading = ref(false);
 
@@ -49,7 +49,7 @@ const onSaveStreamingSetting = function () {
         description: desc.value,
         source: source.value,
         stream_key: streamKey.value,
-        stream_id: streamID.value
+        stream_id: streamID.value,
       },
     },
   })
@@ -95,10 +95,12 @@ const generateKey = (
 
 const { data: streamData } = await useFetch("/api/streaming");
 
-const streamLink = computed(() => `rtmp://${location.host.split(':')[0]}/ingest?key=${streamKey.value}`)
+const streamLink = computed(
+  () => `rtmp://${config.public.INGEST_SERVER}/ingest?key=${streamKey.value}`
+);
 
 function copyToClipboard(text) {
-  navigator.clipboard.writeText(text)
+  navigator.clipboard.writeText(text);
 }
 
 title.value = streamData.value?.body.video.title;
@@ -127,7 +129,7 @@ chatPath.value = streamData.value?.body.mqtt.path;
                   (coverURL ? 'bg-black' : 'bg-primary-100')
                 "
               >
-                <NuxtImg class="h-full" :src="coverURL"></NuxtImg>
+                <img class="h-full" :src="coverURL"></img>
               </div>
             </v-card>
             <v-card-title>
@@ -146,26 +148,26 @@ chatPath.value = streamData.value?.body.mqtt.path;
               ></v-file-input>
               <div class="flex flex-row gap-x-2">
                 <v-text-field
-                color="primary"
-                rounded="lg"
-                label="Stream Key"
-                prepend-icon="mdi-identifier"
-                variant="plain"
-                v-model="streamID"
-                readonly
-                density="compact"
+                  color="primary"
+                  rounded="lg"
+                  label="Stream Key"
+                  prepend-icon="mdi-identifier"
+                  variant="plain"
+                  v-model="streamID"
+                  readonly
+                  density="compact"
                 ></v-text-field>
                 <v-tooltip text="Copy to Clipboard">
                   <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  variant="plain"
-                  density="compact"
-                  class="mt-1"
-                  @click="copyToClipboard(streamID)"
-                  icon="mdi-content-copy"
-                ></v-btn>
-              </template>
+                    <v-btn
+                      v-bind="props"
+                      variant="plain"
+                      density="compact"
+                      class="mt-1"
+                      @click="copyToClipboard(streamID)"
+                      icon="mdi-content-copy"
+                    ></v-btn>
+                  </template>
                 </v-tooltip>
                 <v-tooltip text="Renew ID">
                   <template v-slot:activator="{ props }">
@@ -174,7 +176,7 @@ chatPath.value = streamData.value?.body.mqtt.path;
                       variant="plain"
                       density="compact"
                       class="mt-1"
-                      @click="() => (streamID = generateKey(length=8))"
+                      @click="() => (streamID = generateKey((length = 8)))"
                       icon="mdi-refresh"
                     ></v-btn>
                   </template>
@@ -205,8 +207,7 @@ chatPath.value = streamData.value?.body.mqtt.path;
                 </v-tooltip>
               </div>
               <div class="flex flex-row gap-x-2">
-
-              <v-text-field
+                <v-text-field
                   color="primary"
                   rounded="lg"
                   label="Ingest Server"
@@ -229,7 +230,6 @@ chatPath.value = streamData.value?.body.mqtt.path;
                   </template>
                 </v-tooltip>
               </div>
-
             </v-card-title>
           </v-card-text>
         </v-card>
@@ -256,13 +256,20 @@ chatPath.value = streamData.value?.body.mqtt.path;
             variant="outlined"
             v-model="title"
           ></v-text-field>
-          <v-text-field
+          <div class="flex flex-row gap-2">
+            <v-text-field
             color="primary"
             rounded="lg"
             label="Source"
             variant="outlined"
             v-model="source"
-          ></v-text-field>
+            ></v-text-field>
+            <v-btn color="primary" variant="plain" class="mt-2" @click="() => {
+              source = '/stream/hls/'
+            }">
+              Default
+            </v-btn>
+          </div>
           <v-textarea
             rounded="lg"
             color="primary"

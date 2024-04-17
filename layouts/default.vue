@@ -1,5 +1,4 @@
 <script setup>
-import colors from "vuetify/util/colors";
 const router = useRouter();
 
 const railModeSidebar = useIsRail();
@@ -44,18 +43,20 @@ const openNavbarHandler = function () {
   }
   openSidebar.value = true;
 };
-const logoutHandler = function(){
-  $fetch("/api/logout")
-  isLogin.value = false
+const logoutHandler = function () {
+  $fetch("/api/logout");
+  isLogin.value = false;
   acc.value = null;
-  navigateTo("/", {replace : true});
-}
+  navigateTo("/", { replace: true });
+};
 
-useSeoMeta({ 
-  title: 'SuperStream',
-  ogTitle: 'SuperStream',
-  description: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
-  ogDescription: 'ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์',
+useSeoMeta({
+  title: "SuperStream",
+  ogTitle: "SuperStream",
+  description:
+    "ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์",
+  ogDescription:
+    "ถ่ายทอดสดวิดีโอ live streaming เพื่อให้การสื่อสารที่ทันเวลาทันเหตุการณ์",
   // ogImage: 'https://example.com/image.png',
   // twitterCard: 'summary_large_image',
 });
@@ -77,7 +78,7 @@ useSeoMeta({
         width="30px"
         @click="
           () => {
-            router.push('/');
+            navigateTo('/');
           }
         "
         style="cursor: pointer"
@@ -86,21 +87,12 @@ useSeoMeta({
         class="font-bold cursor-pointer"
         @click="
           () => {
-            router.push('/');
+            navigateTo('/');
           }
         "
         style="flex: 1"
         >SuperStream</v-toolbar-title
       >
-      <!--<v-text-field
-        v-model="searchKeyword"
-        append-inner-icon="mdi-magnify"
-        class="mt-5"
-        density="compact"
-        rounded="pill"
-        flat
-        variant="solo-filled"
-      ></v-text-field>-->
       <div
         class="text-center bg-gray-100 p-2 rounded-full w-[25rem] hidden sm:block"
         variant="solo-filled"
@@ -115,7 +107,7 @@ useSeoMeta({
           color="secondary"
           size="small"
         >
-          {{ displayName.slice(0, 1) }} 
+          {{ displayName.slice(0, 1) }}
         </v-avatar>
         <v-menu activator="#avatarMeunAticvator">
           <v-list rounded="lg">
@@ -160,7 +152,7 @@ useSeoMeta({
           density="comfortable"
           @click="
             () => {
-              router.push('/signin');
+              navigateTo('/signin');
             }
           "
           icon="mdi-login"
@@ -180,7 +172,7 @@ useSeoMeta({
       <v-list-item
         @click="
           () => {
-            router.push('/');
+            navigateTo('/');
           }
         "
         prepend-icon="mdi-home"
@@ -192,7 +184,7 @@ useSeoMeta({
       <v-list-item
         @click="
           () => {
-            router.push('/status');
+            navigateTo('/status');
           }
         "
         prepend-icon="mdi-server-network"
@@ -203,11 +195,11 @@ useSeoMeta({
       <div v-if="railModeSidebar" class="mt-2"></div>
 
       <v-list-item
-        v-if="!railModeSidebar && acc?.username === 'admin'"
+        v-if="!railModeSidebar && acc.username === 'admin'"
         title="Admin"
       ></v-list-item>
       <v-divider
-        v-if="!railModeSidebar && acc?.username === 'admin'"
+        v-if="!railModeSidebar && acc.username === 'admin'"
       ></v-divider>
 
       <v-list-item
@@ -217,33 +209,33 @@ useSeoMeta({
         title="Docs"
         @click="
           () => {
-            router.push('/docs');
+            navigateTo('/docs/help');
           }
         "
       ></v-list-item>
 
       <v-list-item
-        v-if="acc?.username === 'admin'"
+        v-if="acc.username === 'admin'"
         prepend-icon="mdi-access-point"
         rounded="lg"
         link
-        title="Stream Setting"
+        title="Stream Settings"
         @click="
           () => {
-            router.push('/admin/setting');
+            navigateTo('/admin/setting');
           }
         "
       ></v-list-item>
 
       <v-list-item
-        v-if="acc?.username === 'admin'"
+        v-if="acc.username === 'admin'"
         prepend-icon="mdi-account-group"
         rounded="lg"
         link
         title="Manage Account"
         @click="
           () => {
-            router.push('/admin/account');
+            navigateTo('/admin/account');
           }
         "
       ></v-list-item>
