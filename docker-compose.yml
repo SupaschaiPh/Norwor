@@ -14,9 +14,9 @@ services:
     build: ./
     restart: always
     environment:
-      - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=admin123
-      - DOCKER_INGEST_URI=http://nginx
+      - NUXT_ADMIN_USERNAME=admin
+      - NUXT_ADMIN_PASSWORD=admin123
+      - NUXT_DOCKER_INGEST_URI=http://nginx
       - INGEST_SERVER=49.228.131.109:3359
     networks:
         main:
